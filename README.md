@@ -3,6 +3,9 @@
 ## Table of Content
 
 - [Introduction](#Introduction)
+- [Wiki](#Wiki)
+- [Technologies Used](#Technologies-Used)
+- [File Structure](#File-Structure)
 
 ## Introduction
 
