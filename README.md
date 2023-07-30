@@ -16,6 +16,8 @@ This a rewrite of my bachelor's thesis application. The main goal of this projec
 - Metric and data collection
 - Github (wiki, actions, etc.)
 
+Many aspects of the project may not be optimal/correct (ex. using an APi gateway for such a simple app), but the goal is to chekc out as many different ideals as possible, even if they are not needed here.
+
 ## Wiki
 
 Most information and documentation on the project can be found in github wiki [found here](https://github.com/TheSausages/Anime_Web_Application/wiki)
