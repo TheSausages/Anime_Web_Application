@@ -18,7 +18,7 @@ This a rewrite of my bachelor's thesis application. The main goal of this projec
 
 ## Wiki
 
-Most information and documentation on the project can be found in github wiki [found here](https://github.com/TheSausages/Anime_Web_Application/wiki/Introdution)
+Most information and documentation on the project can be found in github wiki [found here](https://github.com/TheSausages/Anime_Web_Application/wiki/Introduction)
 
 ## Technologies Used
 
