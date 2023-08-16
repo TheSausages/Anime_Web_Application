@@ -1,0 +1,14 @@
+dependencies {
+	// Apis
+	api project(":Spring_Base")
+	api "org.springframework.boot:spring-boot-starter-data-jpa:${springVersion}"
+	api "org.springframework.boot:spring-boot-starter-data-rest:${springVersion}"
+	api "org.flywaydb:flyway-core:${flywayVersion}"
+
+	// Runtime
+	api "org.postgresql:postgresql:${postgresqlConnectorVersion}"
+
+	// Testing
+	api "org.testcontainers:postgresql:${testcontainersVersion}"
+	testImplementation files(project(':Spring_Base').sourceSets.test.output, project(':Spring_Base').sourceSets.test.resources)
+}

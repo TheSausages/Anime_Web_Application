@@ -1,0 +1,23 @@
+pluginManagement {
+	repositories {
+		maven { url 'https://repo.spring.io/milestone' }
+		gradlePluginPortal()
+	}
+}
+
+rootProject.name = 'Anime_Web_App'
+
+[
+		'API_Generation': './services/common/',
+		'Spring_Base': './services/common/',
+		'Spring_Database_Base': './services/common/',
+		'Achievement_Service': './services/',
+		'Anime_Service': './services/',
+		'Forum_Service': './services/',
+		'Gateway': './services/',
+		'User_Service': './services/'
+].each { service ->
+	include service.key
+	project(":${service.key}").projectDir = new File(settingsDir, service.value + service.key)
+}
+

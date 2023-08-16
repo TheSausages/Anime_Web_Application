@@ -1,0 +1,191 @@
+openapi: 3.1.0
+x-stoplight:
+  id: vif9xx7piwb29
+info:
+  title: User-Service
+  version: '1.0'
+  contact:
+    name: <Contact Person>
+    url: https://opensource.org/license/mit/
+    email: <Contact Email>
+  license:
+    name: MIT
+    identifier: https://opensource.org/license/mit/
+  termsOfService: <ToS URL>
+  summary: Service for handling user information.
+  description: 'Service for handling user information. This consists of both user info (ex. description), but also user settings (ex. preferred language or light/dark mode). '
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/user/{userId}':
+    parameters:
+      - schema:
+          type: string
+          $ref: Models.yaml#/components/schemas/UserID
+        name: userId
+        in: path
+        required: true
+        description: ID of the user to get info on
+    get:
+      summary: Get information for a given user
+      responses:
+        '200':
+          description: OK - The user was found and a profile was successfully created
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/CompleteUserDTO
+              examples:
+                Successfull Example:
+                  value:
+                    userType: completeUser
+                    userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                    username: Username
+                    achievements:
+                      - id: 5
+                        name: Achievement Name
+                        description: Achievement Description
+                        icon:
+                          - U3dhZ2dlciByb2Nrcw==
+                          - U3dhZ2dlciByb2Nrcw==
+                        points: 10
+                        nrOfUsersPosses: 3
+                    animeInfos:
+                      - id:
+                          userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                          animeId: 195784
+                        status: No Status
+                        watchStartDate: '2019-08-24'
+                        watchEndDate: '2019-08-24'
+                        nrOfEpisodesSeen: 5
+                        isFavourite: true
+                        modification: '2019-08-24T14:15:22Z'
+                        grade: 2
+                        review:
+                          reviewType: simpleReview
+                          id: 1
+                          title: The Review Title
+                          text: The Review text
+                          nrOfUpvotes: 10
+                          nrOfDownvotes: 3
+                          nrOfHelpfull: 8
+                          modification: '2019-08-24T14:15:22Z'
+                    threads:
+                      - threadComplexityType: simpleThread
+                        id: 8
+                        title: Thread Title
+                        nrOfPosts: 4
+                        status: OPEN
+                        creation: '2019-08-24T14:15:22Z'
+                        modification: '2019-08-24T14:15:22Z'
+                        creator:
+                          userType: simpleUser
+                          userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                          username: Username
+                        category:
+                          id: 15
+                          name: Category Name
+                          description: Category Description
+                        tags:
+                          - id: 9
+                            name: Tag Name
+                            importance: LOW
+                            color: 'rgb(789, 654, 321)'
+                        userStatus:
+                          id:
+                            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                            ThreadId: 8
+                          watching: true
+                          blocked: false
+                    posts:
+                      - id: 8
+                        title: Post Title
+                        text: Post Text
+                        creation: '2019-08-24'
+                        modification: '2019-08-26'
+                        creator:
+                          userType: simpleUser
+                          userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                          username: Username
+                        nrOfPlus: 6
+                        nrOfMinus: 1
+                        userStatus:
+                          id:
+                            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                            postId: 8
+                          liked: true
+                          disliked: false
+                          reported: false
+                      - threadInformation:
+                          id: 7
+                          title: Thread Title
+        '404':
+          description: Not Found - The user was not found
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Not Found Error Example:
+                  value:
+                    message: Not Found Error
+                    status: 404
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+        '500':
+          description: Internal Server Error - Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Validation Error:
+                  value:
+                    message: Please contact the administration
+                    status: 500
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: get-user-by-id
+      x-stoplight:
+        id: jw0ua25d8brg2
+      description: 'Endpoint to aquire information on a given user, including the current one (if the correct ID is send).'
+      tags:
+        - User information
+  /settings:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - Keycloak
+        - User information
+      responses:
+        '200':
+          description: OK - Settings returned.
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/UserSettingsDTO
+              examples:
+                Successfull Response:
+                  value:
+                    userId: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+                    language: ENGLISH
+                    mode: LIGTH
+      operationId: get-settings
+      description: Get settings for the currently logged in user.
+      security:
+        - Keycloak_JWT: []
+components:
+  securitySchemes:
+    Keycloak_JWT:
+      type: http
+      scheme: bearer
+      description: 'Authentification used by all microservices, aquired from a Keycloak Service'
+security:
+  - Keycloak_JWT: []
+tags:
+  - name: Achievements Earnable
+    description: 'Depending on user actions, achievements can be earned'
+  - name: Keycloak
+    description: This microservice uses Keycloak for authorization
+  - name: User information
+    description: This endpoint will return some sort of user information

@@ -1,0 +1,2583 @@
+openapi: 3.1.0
+x-stoplight:
+  id: yxl4hpxhcbwab
+info:
+  title: Models
+  version: '1.0'
+  summary: 'Api containing elements (ex. models, security schemes) used in other swagger files'
+  description: 'Api containing elements (ex. models, security schemes) used in other swagger files. This includes error models, DTOs and others.'
+  contact:
+    name: <Contact Person>
+    url: https://opensource.org/license/mit/
+    email: <Contact Email>
+  license:
+    name: MIT
+    identifier: https://opensource.org/license/mit/
+  termsOfService: <ToS URL>
+servers:
+  - url: 'http://localhost:3000'
+components:
+  schemas:
+    DetailedAnimeDTO:
+      title: Detailed Anime DTO
+      type: object
+      description: Detailed information on an Anime. Contains both Anilist and local information.
+      examples:
+        - externalInformation:
+            id: 123987
+            season: SPRING
+            seasonYear: 2021
+            episodes: 12
+            duration: 25
+            genres:
+              - MECHA
+              - ROMANCE
+            averageScore: 95
+            format: TV
+            type: ANIME
+            favourites: 59687
+            isAdult: true
+            title:
+              english: English Title
+              romaji: Romaji Title
+              native: Native Title
+            status: FINISHED
+            coverImage:
+              extraLarge: LinkToExtraLarge
+              large: LinkToLarge
+              medium: LinkToMedium
+              color: LinkToColor
+            description: Some Description
+            source: ORIGINAL
+            startDate:
+              year: 2021
+              month: 1
+              day: 18
+            endDate:
+              year: 2021
+              month: 1
+              day: 18
+            nextAiringEpisode:
+              id: 6325
+              airingAt: 184585
+              timeUntilAiring: 60504
+              episode: 10
+              mediaId: 123987
+            relations:
+              edges:
+                - node:
+                    id: 123
+                    type: MANGA
+                    title:
+                      english: English Title
+                      romaji: Romaji Title
+                      native: Native Title
+                    coverImage:
+                      extraLarge: LinkToExtraLarge
+                      large: LinkToLarge
+                      medium: LinkToMedium
+                      color: LinkToColor
+                    status: FINISHED
+                - id: 7895
+                - relationType: ADAPTATION
+            characters:
+              edges:
+                - node:
+                    id: 963
+                    image:
+                      large: LinkToLarge
+                      medium: LinkToMedium
+                    name:
+                      first: FirstName
+                      middle: MiddleName
+                      last: LastName
+                      full: FullName
+                      native: NativeName
+                      alternative: AlternativeName
+                      alternativeSpoiler: AlternativeNameWithSpoiler
+                  id: 78965
+                  role: MAIN
+                  name: CharacterName
+                  voiceActors:
+                    - id: 78654
+                      name:
+                        first: Kacper
+                        middle: Damian
+                        last: Curys
+                        full: Kacper Damian Curys
+                        native: Kacper Damian Curyś
+                      image:
+                        large: LinkToLarge
+                        medium: LinkToMedium
+                      languageV2: JAPANESE
+              pageInfo:
+                total: 50
+                perPage: 25
+                currentPage: 1
+                lastPage: 50
+                hasNextPage: true
+            staff:
+              nodes:
+                - name:
+                    first: Kacper
+                    middle: Damian
+                    last: Curys
+                    full: Kacper Damian Curys
+                    native: Kacper Damian Curyś
+                  image:
+                    large: LinkToLarge
+                    medium: LinkToMedium
+                  primaryOccupation:
+                    - Voice Actor
+              pageInfo:
+                total: 10
+                perPage: 50
+                currentPage: 10
+                lastPage: 10
+                hasNextPage: false
+          localAnimeInformation:
+            animeId: 165794
+            title: title
+            averageScore: 8.7
+            nrOfFavourites: 10
+            nrOfReviews: 3
+          localAnimeReviews:
+            - id: 1
+              title: The Review Title
+              text: The Review text
+              nrOfUpvotes: 10
+              nrOfDownvotes: 3
+              nrOfHelpfull: 8
+              modification: '2019-08-24T14:15:22Z'
+          localUserAnimeInformation:
+            id:
+              userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+              animeId: 165794
+            status: No Status
+            watchStartDate: '2019-08-24'
+            watchEndDate: '2019-08-24'
+            nrOfEpisodesSeen: 5
+            isFavourite: true
+            modification: '2019-08-24T14:15:22Z'
+            grade: 2
+            review:
+              id: 1
+              title: The Review Title
+              text: The Review text
+              nrOfUpvotes: 10
+              nrOfDownvotes: 3
+              nrOfHelpfull: 8
+              modification: '2019-08-24T14:15:22Z'
+      properties:
+        externalInformation:
+          $ref: '#/components/schemas/DetailedAnilistAnimeInformationDTO'
+        localAnimeInformation:
+          $ref: '#/components/schemas/LocalAnimeInformationDTO'
+        localAnimeReviews:
+          type: array
+          description: Randomly selected User reviews of the Anime
+          items:
+            $ref: '#/components/schemas/LocalSimpleAnimeReviewDTO'
+        localUserAnimeInformation:
+          $ref: '#/components/schemas/LocalUserAnimeInformationDTO'
+      required:
+        - externalInformation
+        - localAnimeInformation
+        - localAnimeReviews
+    LocalAnimeInformationDTO:
+      title: Local Anime Information DTO
+      type: object
+      examples:
+        - animeId: 165794
+          title: title
+          averageScore: 8.7
+          nrOfFavourites: 10
+          nrOfReviews: 3
+      description: 'DTO object for the Anime class. Contains local information on the animation, such as the local user''s average score.'
+      properties:
+        animeId:
+          $ref: '#/components/schemas/AnimeId'
+        title:
+          type: string
+          maximum: 200
+          description: Title of the animation
+        averageScore:
+          type: number
+          minimum: 0
+          maximum: 10
+          format: double
+          description: Average score of the local users.
+        nrOfFavourites:
+          type: integer
+          minimum: 0
+          format: int32
+          description: How many local users favourited the animation
+        nrOfReviews:
+          type: integer
+          minimum: 0
+          format: int32
+          description: How many local users reviewed the animation
+      required:
+        - animeId
+        - title
+        - averageScore
+        - nrOfFavourites
+        - nrOfReviews
+    LocalSimpleAnimeReviewDTO:
+      title: Simple Anime Review DTO
+      type: object
+      description: DTO for the Anime Review class.
+      examples:
+        - reviewType: simpleReview
+          id: 1
+          title: The Review Title
+          text: The Review text
+          nrOfUpvotes: 10
+          nrOfDownvotes: 3
+          nrOfHelpfull: 8
+          modification: '2019-08-24T14:15:22Z'
+      discriminator:
+        propertyName: reviewType
+        mapping:
+          simpleReview: '#/components/schemas/LocalSimpleAnimeReviewDTO'
+          detailedReview: '#/components/schemas/LocalDetailedAnimeReviewDTO'
+      properties:
+        reviewType:
+          type: string
+          enum:
+            - simpleReview
+            - detailedReview
+          description: Discriminator for the Review DTO's
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Id of the review
+        title:
+          type: string
+          maxLength: 100
+          minLength: 10
+          description: Title of the Review
+        text:
+          type: string
+          minLength: 0
+          maxLength: 300
+          description: Text of the Review
+        nrOfUpvotes:
+          type: integer
+          format: int32
+          minimum: 0
+          description: How many people upvoted the review
+        nrOfDownvotes:
+          type: integer
+          format: int32
+          minimum: 0
+          description: How many people downvoted the review
+        nrOfHelpfull:
+          type: integer
+          format: int32
+          minimum: 0
+          description: How many people found the review helpfull
+        modification:
+          type: string
+          format: date-time
+          description: When was the Review last modified
+      required:
+        - reviewType
+        - id
+        - title
+        - text
+        - nrOfUpvotes
+        - nrOfDownvotes
+        - nrOfHelpfull
+        - modification
+    LocalDetailedAnimeReviewDTO:
+      allOf:
+        - $ref: '#/components/schemas/LocalSimpleAnimeReviewDTO'
+      properties:
+        animeId:
+          type: integer
+          format: int64
+          minimum: 1
+          description: 'ID of the Anime, the same used in Anilist.'
+        animeTitle:
+          type: string
+          description: Anime Title
+      required:
+        - animeId
+        - animeTitle
+      description: 'Detailed DTO of the review. Contains additional information on the anime, such as it''s title.'
+      examples:
+        - reviewType: detailedReview
+          id: 1
+          title: The Review Title
+          text: The Review text
+          nrOfUpvotes: 10
+          nrOfDownvotes: 3
+          nrOfHelpfull: 8
+          modification: '2019-08-24T14:15:22Z'
+          animeId: 789541
+          animeTitle: Anime Title
+      title: Local Detailed Anime Review DTO
+    LocalUserAnimeInformationDTO:
+      title: UserAnimeInformationDTO
+      type: object
+      examples:
+        - id:
+            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+            animeId: 195784
+          status: No Status
+          watchStartDate: '2019-08-24'
+          watchEndDate: '2019-08-24'
+          nrOfEpisodesSeen: 5
+          isFavourite: true
+          modification: '2019-08-24T14:15:22Z'
+          grade: 2
+          review:
+            reviewType: simpleReview
+            id: 1
+            title: The Review Title
+            text: The Review text
+            nrOfUpvotes: 10
+            nrOfDownvotes: 3
+            nrOfHelpfull: 8
+            modification: '2019-08-24T14:15:22Z'
+      description: User's information on a selected Anime.
+      properties:
+        id:
+          type: object
+          description: DTO containing basic information on a user
+          required:
+            - userId
+            - animeId
+          properties:
+            userId:
+              $ref: '#/components/schemas/UserID'
+            animeId:
+              $ref: '#/components/schemas/AnimeId'
+        status:
+          type: string
+          enum:
+            - NO_STATUS
+            - WATCHING
+            - COMPLETED
+            - DROPPED
+            - PLAN_TO_WATCH
+          description: Current User status on the Anime
+        watchStartDate:
+          type: string
+          format: date
+          description: When the User started watching the Anime
+        watchEndDate:
+          type: string
+          format: date
+          description: When the User finished watching the Anime
+        nrOfEpisodesSeen:
+          type: integer
+          description: How many episodes did the User see
+          format: int32
+          minimum: 0
+        isFavourite:
+          type: boolean
+          description: Did the User select the Anime as his/her favourite
+        modification:
+          type: string
+          format: date-time
+          description: Last time the information was modificated
+        grade:
+          type: integer
+          minimum: 1
+          maximum: 10
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+          description: Grade the User gave to the Anime. In scale from 1 to 10
+        review:
+          $ref: '#/components/schemas/LocalSimpleAnimeReviewDTO'
+      required:
+        - id
+        - status
+        - isFavourite
+        - modification
+    AnimeId:
+      type: integer
+      title: Anime Id
+      format: int64
+      minimum: 0
+      description: 'ID of the Anime, the same used in Anilist.'
+      examples:
+        - 159753
+    AnimeQueryDTO:
+      title: Anime Query DTO
+      type: object
+      description: Query used to search for Anime using conditions set by the user.
+      examples:
+        - title: Title
+          maxStartDate: '2019-08-26'
+          minStartDate: '2019-08-24'
+          minEndDate: '2019-09-24'
+          maxEndDate: '2019-10-26'
+          maxNrOfEpisodes: 15
+          minNrOfEpisodes: 0
+          maxAverageScore: 50
+          minAverageScore: 80
+          season: SPRING
+          seasonYear: 1900
+          status: FINISHED
+          format: TV
+      properties:
+        title:
+          type: string
+          description: What should the title contain
+        maxStartDate:
+          type: string
+          format: date
+          description: Max date when the Anime started airing
+        minStartDate:
+          type: string
+          format: date
+          description: Mix date when the Anime started airing
+        minEndDate:
+          type: string
+          format: date
+          description: Min date when the Anime finished airing
+        maxEndDate:
+          type: string
+          format: date
+          description: Max date when the Anime finished airing
+        maxNrOfEpisodes:
+          type: integer
+          minimum: 0
+          format: int32
+          description: Max nr. of episodes the Anime has aired till now
+        minNrOfEpisodes:
+          type: integer
+          format: int32
+          minimum: 0
+          description: Min nr. of episodes the Anime has aired till now
+        maxAverageScore:
+          type: integer
+          format: int32
+          maximum: 100
+          minimum: 0
+          description: Max average score of Anilist users that the anime can have
+        minAverageScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+          format: int32
+          description: Min average score of Anilist users that the anime can have
+        season:
+          $ref: '#/components/schemas/AnilistMediaSeason'
+        seasonYear:
+          description: What year did the anime air
+          type: integer
+          format: int32
+          minimum: 1900
+        status:
+          $ref: '#/components/schemas/AnilistMediaStatus'
+        format:
+          $ref: '#/components/schemas/AnilistMediaFormat'
+    AnilistResponseDTO-Media:
+      title: Anilist Response DTO - Media
+      type: object
+      description: |-
+        DTO representing the response received from Anilist.
+
+        Because Openapi-Generator doesn't support oneOf (as of 20.01.2021) the Anilist Response has been changed into 2 classes - after the implementation change into single class with oneOf.
+      examples:
+        - data:
+            Media:
+              id: 123987
+              season: SPRING
+              seasonYear: 2021
+              episodes: 12
+              duration: 25
+              genres:
+                - MECHA
+                - ROMANCE
+              averageScore: 95
+              format: TV
+              type: ANIME
+              favourites: 59687
+              isAdult: true
+              title:
+                english: English Title
+                romaji: Romaji Title
+                native: Native Title
+              status: FINISHED
+              coverImage:
+                extraLarge: LinkToExtraLarge
+                large: LinkToLarge
+                medium: LinkToMedium
+                color: LinkToColor
+              description: Some Description
+              source: ORIGINAL
+              startDate:
+                year: 2021
+                month: 1
+                day: 18
+              endDate:
+                year: 2021
+                month: 1
+                day: 18
+              nextAiringEpisode:
+                id: 6325
+                airingAt: 184585
+                timeUntilAiring: 60504
+                episode: 10
+                mediaId: 123987
+              relations:
+                edges:
+                  id: 123
+                  type: MANGA
+                  title:
+                    english: English Title
+                    romaji: Romaji Title
+                    native: Native Title
+                  coverImage:
+                    extraLarge: LinkToExtraLarge
+                    large: LinkToLarge
+                    medium: LinkToMedium
+                    color: LinkToColor
+                  status: FINISHED
+                id: 7895
+                relationType: ADAPTATION
+              characters:
+                edges:
+                  node:
+                    id: 963
+                    image:
+                      large: LinkToLarge
+                      medium: LinkToMedium
+                    name:
+                      first: FirstName
+                      middle: MiddleName
+                      last: LastName
+                      full: FullName
+                      native: NativeName
+                      alternative: AlternativeName
+                      alternativeSpoiler: AlternativeNameWithSpoiler
+                  id: 78965
+                  role: MAIN
+                  name: CharacterName
+                  voiceActors:
+                    id: 78654
+                    name:
+                      first: Kacper
+                      middle: Damian
+                      last: Curys
+                      full: Kacper Damian Curys
+                      native: Kacper Damian Curyś
+                    image:
+                      large: LinkToLarge
+                      medium: LinkToMedium
+                    languageV2: JAPANESE
+                pageInfo:
+                  total: 50
+                  perPage: 25
+                  currentPage: 1
+                  lastPage: 50
+                  hasNextPage: true
+              staff:
+                nodes:
+                  name:
+                    first: Kacper
+                    middle: Damian
+                    last: Curys
+                    full: Kacper Damian Curys
+                    native: Kacper Damian Curyś
+                  image:
+                    large: LinkToLarge
+                    medium: LinkToMedium
+                  primaryOccupation:
+                    - Voice Actor
+                pageInfo:
+                  total: 10
+                  perPage: 50
+                  currentPage: 10
+                  lastPage: 10
+                  hasNextPage: false
+      properties:
+        data:
+          $ref: '#/components/schemas/AnilistMediaDTO'
+      required:
+        - data
+    AnilistResponseDTO-Page:
+      title: Anilist Response DTO - Page
+      type: object
+      description: |-
+        DTO representing the response received from Anilist.
+
+        Because Openapi-Generator doesn't support oneOf (as of 20.01.2021) the Anilist Response has been changed into 2 classes - after the implementation change into single class with oneOf.
+      examples:
+        - data:
+            Page:
+              media:
+                - id: 789654
+                  coverImage:
+                    extraLarge: LinkToCoverImage
+                    large: LinkToLarge
+                    medium: LinkToMedium
+                    color: LinkToColor
+                  title:
+                    english: EnglishTitle
+                    romaji: RomajiTitle
+                    native: NativeTitle
+              pageInfo:
+                total: 10
+                perPage: 5
+                currentPage: 1
+                lastPage: 10
+                hasNextPage: true
+      properties:
+        data:
+          $ref: '#/components/schemas/AnilistPageCoverDTO'
+      required:
+        - data
+    AnilistMediaDTO:
+      title: Anilist Media DTO
+      type: object
+      description: DTO containing information on a Anilist Media.
+      examples:
+        - Media:
+            id: 123987
+            season: SPRING
+            seasonYear: 2021
+            episodes: 12
+            duration: 25
+            genres:
+              - MECHA
+              - ROMANCE
+            averageScore: 95
+            format: TV
+            type: ANIME
+            favourites: 59687
+            isAdult: true
+            title:
+              english: English Title
+              romaji: Romaji Title
+              native: Native Title
+            status: FINISHED
+            coverImage:
+              extraLarge: LinkToExtraLarge
+              large: LinkToLarge
+              medium: LinkToMedium
+              color: LinkToColor
+            description: Some Description
+            source: ORIGINAL
+            startDate:
+              year: 2021
+              month: 1
+              day: 18
+            endDate:
+              year: 2021
+              month: 1
+              day: 18
+            nextAiringEpisode:
+              id: 6325
+              airingAt: 184585
+              timeUntilAiring: 60504
+              episode: 10
+              mediaId: 123987
+            relations:
+              edges:
+                - node:
+                    id: 123
+                    type: MANGA
+                    title:
+                      english: English Title
+                      romaji: Romaji Title
+                      native: Native Title
+                    coverImage:
+                      extraLarge: LinkToExtraLarge
+                      large: LinkToLarge
+                      medium: LinkToMedium
+                      color: LinkToColor
+                    status: FINISHED
+                - id: 7895
+                - relationType: ADAPTATION
+            characters:
+              edges:
+                - node:
+                    id: 963
+                    image:
+                      large: LinkToLarge
+                      medium: LinkToMedium
+                    name:
+                      first: FirstName
+                      middle: MiddleName
+                      last: LastName
+                      full: FullName
+                      native: NativeName
+                      alternative: AlternativeName
+                      alternativeSpoiler: AlternativeNameWithSpoiler
+                  id: 78965
+                  role: MAIN
+                  name: CharacterName
+                  voiceActors:
+                    - id: 78654
+                      name:
+                        first: Kacper
+                        middle: Damian
+                        last: Curys
+                        full: Kacper Damian Curys
+                        native: Kacper Damian Curyś
+                      image:
+                        large: LinkToLarge
+                        medium: LinkToMedium
+                      languageV2: JAPANESE
+              pageInfo:
+                total: 50
+                perPage: 25
+                currentPage: 1
+                lastPage: 50
+                hasNextPage: true
+            staff:
+              nodes:
+                - name:
+                    first: Kacper
+                    middle: Damian
+                    last: Curys
+                    full: Kacper Damian Curys
+                    native: Kacper Damian Curyś
+                  image:
+                    large: LinkToLarge
+                    medium: LinkToMedium
+                  primaryOccupation:
+                    - Voice Actor
+              pageInfo:
+                total: 10
+                perPage: 50
+                currentPage: 10
+                lastPage: 10
+                hasNextPage: false
+      properties:
+        Media:
+          $ref: '#/components/schemas/DetailedAnilistAnimeInformationDTO'
+      required:
+        - Media
+    AnilistPageDTO:
+      title: Anilist Page DTO
+      type: object
+      examples:
+        - media:
+            - id: 789654
+              coverImage:
+                extraLarge: LinkToCoverImage
+                large: LinkToLarge
+                medium: LinkToMedium
+                color: LinkToColor
+              title:
+                english: EnglishTitle
+                romaji: RomajiTitle
+                native: NativeTitle
+          pageInfo:
+            total: 10
+            perPage: 5
+            currentPage: 1
+            lastPage: 10
+            hasNextPage: true
+      description: DTO containing information on a Anilist Page containing a selected number of media.
+      properties:
+        media:
+          description: Array of medias that fullfill the requirements
+          type: array
+          items:
+            $ref: '#/components/schemas/AnilistBasicAnimeInformation'
+        pageInfo:
+          $ref: '#/components/schemas/AnilistPageInfo'
+      required:
+        - media
+        - pageInfo
+    AnilistPageCoverDTO:
+      title: Anilist Page Cover DTO
+      type: object
+      description: Inner field of the Page DTO. Is always present.
+      examples:
+        - Page:
+            media:
+              - id: 789654
+                coverImage:
+                  extraLarge: LinkToCoverImage
+                  large: LinkToLarge
+                  medium: LinkToMedium
+                  color: LinkToColor
+                title:
+                  english: EnglishTitle
+                  romaji: RomajiTitle
+                  native: NativeTitle
+            pageInfo:
+              total: 10
+              perPage: 5
+              currentPage: 1
+              lastPage: 10
+              hasNextPage: true
+      properties:
+        Page:
+          $ref: '#/components/schemas/AnilistPageDTO'
+      required:
+        - Page
+    DetailedAnilistAnimeInformationDTO:
+      title: Detailed Anilist Anime Information DTO
+      type: object
+      examples:
+        - id: 123987
+          season: SPRING
+          seasonYear: 2021
+          episodes: 12
+          duration: 25
+          genres:
+            - MECHA
+            - ROMANCE
+          averageScore: 95
+          format: TV
+          type: ANIME
+          favourites: 59687
+          isAdult: true
+          title:
+            english: English Title
+            romaji: Romaji Title
+            native: Native Title
+          status: FINISHED
+          coverImage:
+            extraLarge: LinkToExtraLarge
+            large: LinkToLarge
+            medium: LinkToMedium
+            color: LinkToColor
+          description: Some Description
+          source: ORIGINAL
+          startDate:
+            year: 2021
+            month: 1
+            day: 18
+          endDate:
+            year: 2021
+            month: 1
+            day: 18
+          nextAiringEpisode:
+            id: 6325
+            airingAt: 184585
+            timeUntilAiring: 60504
+            episode: 10
+            mediaId: 123987
+          relations:
+            edges:
+              - node:
+                  id: 123
+                  type: MANGA
+                  title:
+                    english: English Title
+                    romaji: Romaji Title
+                    native: Native Title
+                  coverImage:
+                    extraLarge: LinkToExtraLarge
+                    large: LinkToLarge
+                    medium: LinkToMedium
+                    color: LinkToColor
+                  status: FINISHED
+              - id: 7895
+              - relationType: ADAPTATION
+          characters:
+            edges:
+              - node:
+                  id: 963
+                  image:
+                    large: LinkToLarge
+                    medium: LinkToMedium
+                  name:
+                    first: FirstName
+                    middle: MiddleName
+                    last: LastName
+                    full: FullName
+                    native: NativeName
+                    alternative: AlternativeName
+                    alternativeSpoiler: AlternativeNameWithSpoiler
+                id: 78965
+                role: MAIN
+                name: CharacterName
+                voiceActors:
+                  - id: 78654
+                    name:
+                      first: Kacper
+                      middle: Damian
+                      last: Curys
+                      full: Kacper Damian Curys
+                      native: Kacper Damian Curyś
+                    image:
+                      large: LinkToLarge
+                      medium: LinkToMedium
+                    languageV2: JAPANESE
+            pageInfo:
+              total: 50
+              perPage: 25
+              currentPage: 1
+              lastPage: 50
+              hasNextPage: true
+          staff:
+            nodes:
+              - name:
+                  first: Kacper
+                  middle: Damian
+                  last: Curys
+                  full: Kacper Damian Curys
+                  native: Kacper Damian Curyś
+                image:
+                  large: LinkToLarge
+                  medium: LinkToMedium
+                primaryOccupation:
+                  - Voice Actor
+            pageInfo:
+              total: 10
+              perPage: 50
+              currentPage: 10
+              lastPage: 10
+              hasNextPage: false
+      description: Contains detailed information about a selected Anime. The data is requested from Anilist.
+      properties:
+        id:
+          type: integer
+          description: ID of the searcher Anime
+        season:
+          $ref: '#/components/schemas/AnilistMediaSeason'
+        seasonYear:
+          type: integer
+          description: Year of the season
+          format: int32
+          minimum: 1950
+        episodes:
+          type: number
+          description: Number of episodes
+        duration:
+          type: integer
+          description: Duration of episodes
+        genres:
+          type: array
+          description: Genres of the media
+          items:
+            type: string
+        averageScore:
+          type: integer
+          description: Average score of Anilist users
+        format:
+          $ref: '#/components/schemas/AnilistMediaFormat'
+        type:
+          $ref: '#/components/schemas/AnilistMediaType'
+        favourites:
+          type: number
+          description: Number of Anilist users that favourited the media
+        isAdult:
+          type: boolean
+          description: Is the media intended for adults
+        title:
+          $ref: '#/components/schemas/AnilistMediaTitle'
+        status:
+          $ref: '#/components/schemas/AnilistMediaStatus'
+        coverImage:
+          $ref: '#/components/schemas/AnilistCoverImage'
+        description:
+          type: string
+          description: Description of the media. In form of preformatted html text
+        source:
+          $ref: '#/components/schemas/AnilistMediaSource'
+        startDate:
+          $ref: '#/components/schemas/AnilistDateDTO'
+        endDate:
+          $ref: '#/components/schemas/AnilistDateDTO'
+        nextAiringEpisode:
+          type: object
+          description: information on the next airing episode
+          required:
+            - id
+            - airingAt
+            - timeUntilAiring
+            - episode
+            - mediaId
+          properties:
+            id:
+              type: integer
+              description: ID of the next airing episode
+            airingAt:
+              type: integer
+              description: When is the next airing episode airing (in seconds)
+            timeUntilAiring:
+              type: integer
+              description: Time left until next airing episode (in seconds)
+            episode:
+              type: integer
+              description: Next airing episode number
+            mediaId:
+              type: integer
+              description: ID of the media
+        relations:
+          type: object
+          description: Information on each relation for the media
+          required:
+            - edges
+          properties:
+            edges:
+              type: array
+              description: Array of edges
+              items:
+                type: object
+                description: Information on edges of the relation connection
+                properties:
+                  node:
+                    type: object
+                    description: Information on each node
+                    properties:
+                      id:
+                        type: integer
+                        format: int32
+                        description: ID of the relation
+                      type:
+                        $ref: '#/components/schemas/AnilistMediaType'
+                      title:
+                        $ref: '#/components/schemas/AnilistMediaTitle'
+                      coverImage:
+                        $ref: '#/components/schemas/AnilistCoverImage'
+                      status:
+                        $ref: '#/components/schemas/AnilistMediaStatus'
+                  id:
+                    type: integer
+                    format: int32
+                    description: ID of the relation
+                  relationType:
+                    $ref: '#/components/schemas/AnilistMediaRelation'
+        characters:
+          type: object
+          description: Information on the characters
+          required:
+            - edges
+            - pageInfo
+          properties:
+            edges:
+              type: array
+              description: Array of edges
+              items:
+                type: object
+                description: Information on edges of the character connection
+                properties:
+                  node:
+                    type: object
+                    description: Information on each edge
+                    properties:
+                      id:
+                        type: integer
+                        format: int32
+                        description: ID of the character
+                      image:
+                        $ref: '#/components/schemas/AnilistImage'
+                      name:
+                        type: object
+                        properties:
+                          first:
+                            type: string
+                            description: First name of the character
+                          middle:
+                            type: string
+                            description: Middle (second) name of the character
+                          last:
+                            type: string
+                            description: Last name of the character
+                          full:
+                            type: string
+                            description: Full name of the character
+                          native:
+                            type: string
+                            description: Native name of the character
+                        required:
+                          - first
+                          - full
+                  id:
+                    type: integer
+                    format: int32
+                    description: ID of the edge
+                  role:
+                    type: string
+                    enum:
+                      - MAIN
+                      - SUPPORTING
+                      - BACKGROUND
+                    description: Role of the character
+                  name:
+                    type: string
+                    description: Name of the Edge
+                  voiceActors:
+                    type: array
+                    description: Information on the voice actor of the character
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          format: int32
+                          description: ID of the voice actor
+                        name:
+                          $ref: '#/components/schemas/AnilistMediaStaffName'
+                        image:
+                          $ref: '#/components/schemas/AnilistImage'
+                        languageV2:
+                          type: string
+                          description: Language of the voice actor
+            pageInfo:
+              $ref: '#/components/schemas/AnilistPageInfo'
+        staff:
+          type: object
+          description: Information on the media staff members
+          required:
+            - pageInfo
+          properties:
+            nodes:
+              type: array
+              description: Array of Staffs
+              items:
+                type: object
+                description: Information on each staff
+                properties:
+                  name:
+                    $ref: '#/components/schemas/AnilistMediaStaffName'
+                  image:
+                    $ref: '#/components/schemas/AnilistImage'
+                  primaryOccupation:
+                    type: array
+                    description: Primary occupation of the staff
+                    items:
+                      type: string
+            pageInfo:
+              $ref: '#/components/schemas/AnilistPageInfo'
+      required:
+        - id
+        - season
+        - seasonYear
+        - episodes
+        - duration
+        - genres
+        - averageScore
+        - format
+        - type
+        - favourites
+        - isAdult
+        - title
+        - status
+        - coverImage
+        - description
+        - source
+        - startDate
+        - endDate
+        - relations
+        - characters
+        - staff
+    AnilistBasicAnimeInformation:
+      title: Anilist Basic Anime Information
+      type: object
+      description: DTO containing basic information on an Anime. Usually used to create links to detailed information on the Anime.
+      examples:
+        - id: 789654
+          coverImage:
+            extraLarge: LinkToCoverImage
+            large: LinkToLarge
+            medium: LinkToMedium
+            color: LinkToColor
+          title:
+            english: EnglishTitle
+            romaji: RomajiTitle
+            native: NativeTitle
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: ID of the anime
+        coverImage:
+          $ref: '#/components/schemas/AnilistCoverImage'
+        title:
+          $ref: '#/components/schemas/AnilistMediaTitle'
+      required:
+        - id
+        - coverImage
+        - title
+    AnilistDateDTO:
+      title: Anilist Date DTO
+      type: object
+      properties:
+        year:
+          type: integer
+          format: int32
+          minimum: 1900
+        month:
+          type: integer
+          format: int32
+          minimum: 0
+        day:
+          type: integer
+          format: int32
+          minimum: 0
+      description: DTO containing the field containing Date that Anilist returns.
+      examples:
+        - year: 2021
+          month: 1
+          day: 18
+    AnilistMediaFormat:
+      type: string
+      title: Media Format
+      enum:
+        - TV
+        - TV_SHORT
+        - SPECIAL
+        - OVA
+        - ONA
+        - MUSIC
+        - MANGA
+        - NOVAL
+        - ONE_SHOW
+      description: Enum containing the posible Media Formats (from Anilist).
+      examples:
+        - TV
+    AnilistMediaSeason:
+      type: string
+      enum:
+        - SPRING
+        - SUMMER
+        - FALL
+        - WINTER
+      title: Media Season
+      description: Enum containing the posible Media Season (from Anilist).
+      examples:
+        - SPRING
+    AnilistMediaType:
+      type: string
+      title: Media Type
+      enum:
+        - ANIME
+        - MANGA
+      description: Enum containing the posible Media types (from Anilist).
+      examples:
+        - ANIME
+    AnilistMediaTitle:
+      title: Media Title
+      type: object
+      description: 'DTO containing the posible fields for the Media Title (from Anilist). Because it''s posiible some media will only have selected language titles, no title can be requested.'
+      properties:
+        english:
+          type: string
+          description: 'The english language title '
+        romaji:
+          type: string
+          description: The romaji language (japanese with latin alphabet) title
+        native:
+          type: string
+          description: native language title
+      examples:
+        - english: English Title
+          romaji: Romaji Title
+          native: Native Title
+        - native: Native Title
+    AnilistMediaStatus:
+      type: string
+      title: Media Status
+      enum:
+        - FINISHED
+        - RELEASING
+        - NOT_YET_RELEASED
+        - CANCELLED
+        - HIATUS
+      description: Enum containing the posible Media Statuses (from Anilist).
+      examples:
+        - FINISHED
+    AnilistCoverImage:
+      title: Cover Image
+      type: object
+      description: 'DTO containing the posible fields for the Media Title (from Anilist). Each of the fields is a link to Anilist, with which the image can be requested.'
+      examples:
+        - extraLarge: LinkToExtraLarge
+          large: LinkToLarge
+          medium: LinkToMedium
+          color: LinkToColor
+      properties:
+        extraLarge:
+          type: string
+          description: Link to the largest possible size
+        large:
+          type: string
+          description: Link to a large size image
+        medium:
+          type: string
+          description: Link to a medium size image
+        color:
+          type: string
+          description: 'The average #hex color number of the image'
+      required:
+        - extraLarge
+        - large
+        - medium
+    AnilistMediaSource:
+      type: string
+      title: Media Source
+      enum:
+        - ORIGINAL
+        - MANGA
+        - LIGHT_NOVEL
+        - VISUAL_NOVEL
+        - VIDEO_GAME
+        - OTHER
+        - NOVEL
+        - DOUJINSHI
+        - ANIME
+        - WEB_NOVEL
+        - LIVE_ACTION
+        - GAME
+        - COMIC
+        - MULTIMEDIA_PROJECT
+        - PICTURE_BOOK
+      description: Enum containing the posible Media Sources (from Anilist).
+      examples:
+        - ORIGINAL
+    AnilistFuzzyDateInt:
+      type: number
+      title: Fuzzy Date Int
+      minimum: 10000000
+      maximum: 99999999
+      description: |-
+        Int field used to represent dates in the Anilist service. Created as: YYYYMMDD (as numbers). 
+        Ex: 26 September 1999 will be 19990926.
+      examples:
+        - 19990926
+    AnilistPageInfo:
+      title: Page Info
+      type: object
+      description: DTO containing the fields for Page Information data from Anilist. Each field is required.
+      examples:
+        - total: 26
+          perPage: 50
+          currentPage: 10
+          lastPage: 26
+          hasNextPage: true
+      properties:
+        total:
+          type: integer
+          format: int32
+          description: The total number of pages
+          minimum: 1
+        perPage:
+          type: integer
+          format: int32
+          description: How many elements are there per page
+          minimum: 1
+          maximum: 50
+        currentPage:
+          type: integer
+          format: int32
+          description: What is the current page
+          minimum: 0
+        lastPage:
+          type: integer
+          format: int32
+          description: What is the last page (the number)
+          minimum: 1
+        hasNextPage:
+          type: boolean
+          description: Does the next page exist
+      required:
+        - total
+        - perPage
+        - currentPage
+        - lastPage
+        - hasNextPage
+    AnilistImage:
+      title: Image
+      type: object
+      description: DTO containing fields for a non-cover image from Anilist. Both fields are links to the Anilist service.
+      properties:
+        large:
+          type: string
+          description: Link to the large image
+        medium:
+          type: string
+          description: Link to the small image
+      required:
+        - large
+        - medium
+      examples:
+        - large: LinkToLarge
+          medium: LinkToMedium
+    AnilistMediaStaffName:
+      title: Media Staff Name
+      type: object
+      description: DTO containing fields for names of media staff members. Both fields are links to the Anilist service.
+      examples:
+        - first: Kacper
+          middle: Damian
+          last: Curys
+          full: Kacper Damian Curys
+          native: Kacper Damian Curyś
+      properties:
+        first:
+          type: string
+          description: First name
+        middle:
+          type: string
+          description: Middle (second) name
+        last:
+          type: string
+          description: Last name
+        full:
+          type: string
+          description: Full name
+        native:
+          type: string
+          description: The name in native letters
+    AnilistMediaRelation:
+      type: string
+      title: Media Relation
+      enum:
+        - ADAPTATION
+        - PREQUEL
+        - SEQUEL
+        - PARENT
+        - SIDE_STORY
+        - CHARACTER
+        - SUMMARY
+        - ALTERNATIVE
+        - SPIN_OFF
+        - OTHER
+        - SOURCE
+        - COMPILATION
+        - CONTAINS
+      description: Enum containing the posible Media relations (from Anilist).
+      examples:
+        - ADAPTATION
+    ErrorDTO:
+      title: Error DTO
+      type: object
+      description: The DTO for backend errors.
+      examples:
+        - message: Error Message
+          status: 503
+          timestamp: '2019-08-24T14:15:22Z'
+          code: 2c4a230c-5085-4924-a3e1-25fb4fc5965
+      properties:
+        message:
+          type: string
+          description: Translated error message
+        status:
+          type: integer
+          description: The Error status
+        timestamp:
+          type: string
+          format: date-time
+          description: When did the error occur
+        code:
+          type: string
+          format: uuid
+          description: 'Unique code for each error occurence, make''s it easier to search in logs'
+      required:
+        - message
+        - status
+        - timestamp
+        - code
+    SimpleUserDTO:
+      title: Simple User DTO
+      type: object
+      description: DTO containing basic information on a user.
+      examples:
+        - userType: simpleUser
+          userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+          username: Username
+      discriminator:
+        propertyName: userType
+        mapping:
+          simpleUser: '#/components/schemas/SimpleUserDTO'
+          completeUser: '#/components/schemas/CompleteUserDTO'
+      properties:
+        userType:
+          type: string
+          enum:
+            - simpleUser
+            - completeUser
+        userId:
+          $ref: '#/components/schemas/UserID'
+        username:
+          type: string
+          description: 'ID of the Anime, the same used in Anilist.'
+          minLength: 6
+      required:
+        - userType
+        - userId
+        - username
+    AchievementDTO:
+      title: Achievement send to Frontend upon aquisition
+      x-stoplight:
+        id: c99df8c7027c9
+      type: object
+      examples:
+        - id: 5
+          name: Achievement Name
+          description: Achievement Description
+          icon:
+            - byte 1
+            - byte 2
+          points: 10
+          nrOfUsersPosses: 3
+      description: DTO containg all necessery information on an Achievement.
+      properties:
+        id:
+          $ref: '#/components/schemas/AchievementId'
+        name:
+          type: string
+          minLength: 1
+          description: Name of the achievement
+        description:
+          type: string
+          minLength: 1
+          description: Description of the achievement
+        icon:
+          type: string
+          format: byte
+          description: |-
+            The achievement Icon.
+            Causion! The openapi generator creates a byte array in place of a single byte
+        points:
+          type: integer
+          format: int32
+          minimum: 1
+          description: How many points does the achievement give
+        nrOfUsersPosses:
+          type: integer
+          format: int64
+          minimum: 0
+          description: How many people posses the achievement
+      required:
+        - id
+        - name
+        - description
+        - icon
+        - points
+        - nrOfUsersPosses
+    AchievementId:
+      type: string
+      title: Achievement Id
+      description: ID of the Achievement database entity.
+      examples:
+        - 45
+      format: uuid
+    CompleteUserDTO:
+      title: Complete User DTO
+      allOf:
+        - $ref: '#/components/schemas/SimpleUserDTO'
+      properties:
+        achievements:
+          description: Set containing some achievements of the user
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/AchievementDTO'
+        animeInfos:
+          description: Set containing some anime Information of the user
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/LocalUserAnimeInformationDTO'
+        threads:
+          description: Set containing some threads created by the user
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/SimpleThreadDTO'
+        posts:
+          description: Set containing some posts created by the user
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/PostWithThreadInformationDTO'
+      required:
+        - achievements
+        - animeInfos
+        - threads
+        - posts
+      description: DTO containg complete information on a user.
+      examples:
+        - userType: completeUser
+          userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+          username: Username
+          achievements:
+            - id: 5
+              name: Achievement Name
+              description: Achievement Description
+              icon:
+                - byte 1
+                - byte 2
+              points: 10
+              nrOfUsersPosses: 3
+          animeInfos:
+            - id:
+                userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                animeId: 195784
+              status: No Status
+              watchStartDate: '2019-08-24'
+              watchEndDate: '2019-08-24'
+              nrOfEpisodesSeen: 5
+              isFavourite: true
+              modification: '2019-08-24T14:15:22Z'
+              grade: 2
+              review:
+                reviewType: simpleReview
+                id: 1
+                title: The Review Title
+                text: The Review text
+                nrOfUpvotes: 10
+                nrOfDownvotes: 3
+                nrOfHelpfull: 8
+                modification: '2019-08-24T14:15:22Z'
+          threads:
+            - threadComplexityType: simpleThread
+              id: 7
+              title: Thread Title
+              nrOfPosts: 4
+              status: OPEN
+              creation: '2019-08-24T14:15:22Z'
+              modification: '2019-08-24T14:15:22Z'
+              creator:
+                userType: simpleUser
+                userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                username: Username
+              category:
+                id: 15
+                name: Category Name
+                description: Category Description
+              tags:
+                - id: 9
+                  name: Tag Name
+                  importance: LOW
+                  color: 'rgb(789, 654, 321)'
+              userStatus:
+                id:
+                  userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                  ThreadId: 8
+                watching: true
+                blocked: false
+          posts:
+            - id: 8
+              title: Post Title
+              text: Post Text
+              creation: '2019-08-24'
+              modification: '2019-08-26'
+              creator:
+                userType: simpleUser
+                userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                username: Username
+              nrOfPlus: 6
+              nrOfMinus: 1
+              userStatus:
+                id:
+                  userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                  postId: 8
+                liked: true
+                disliked: false
+                reported: false
+            - threadInformation:
+                id: 7
+                title: Thread Title
+    UserID:
+      type: string
+      title: User ID
+      format: uuid
+      description: 'User ID, same as in Keycloak.'
+      examples:
+        - 497f6eca-6276-4993-bfeb-53cbbbba6f08
+    DomainPageDTO:
+      title: Spring Page DTO
+      type: object
+      description: 'DTO representing the Spring domain page DTO. This should be extended (and add the field: content: array[(Some Class)]) in order to get the desired content.'
+      examples:
+        - domainPageType: somePageType
+          content:
+            - name: Generic object
+          nrOfElements: 1
+          pageSize: 50
+          pageNumber: 1
+          totalPages: 1
+          last: true
+          empty: false
+      discriminator:
+        propertyName: domainPageType
+        mapping:
+          simpleThreadPage: '#/components/schemas/SimpleThreadPageDTO'
+          simplePostPage: '#/components/schemas/SimplePostPageDTO'
+          completePostPage: '#/components/schemas/CompletePostPageDTO'
+      properties:
+        domainPageType:
+          type: string
+          enum:
+            - simpleThreadPage
+            - simplePostPage
+            - completePostPage
+        nrOfElements:
+          type: integer
+          format: int32
+          minimum: 0
+          description: How many elements does the page contain
+        pageSize:
+          type: integer
+          format: int32
+          minimum: 0
+          description: Size of the page
+        pageNumber:
+          $ref: '#/components/schemas/PageNumber'
+        totalPages:
+          type: integer
+          format: int64
+          minimum: 0
+          description: How many total pates are there
+        last:
+          type: boolean
+          description: Is this the last page
+        empty:
+          type: boolean
+          description: Is the page empty
+      required:
+        - domainPageType
+        - nrOfElements
+        - pageSize
+        - pageNumber
+        - totalPages
+        - last
+        - empty
+    SimpleThreadPageDTO:
+      title: Simple Thread Page DTO
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/DomainPageDTO'
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleThreadDTO'
+      required:
+        - content
+      description: Domain Page extension for Simple Threads.
+      examples:
+        - domainPageType: simpleThreadPage
+          content:
+            - id: 8
+              title: Thread Title
+              nrOfPosts: 4
+              status: OPEN
+              creation: '2019-08-24T14:15:22Z'
+              modification: '2019-08-24T14:15:22Z'
+              creator:
+                userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                username: Username
+              category:
+                id: 15
+                name: Category Name
+                description: Category Description
+              tags:
+                - id: 9
+                  name: Tag Name
+                  importance: LOW
+                  color: 'rgb(789, 654, 321)'
+              userStatus:
+                id:
+                  userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                  ThreadId: 8
+                watching: true
+                blocked: false
+          nrOfElements: 1
+          pageSize: 1
+          pageNumber: 1
+          totalPages: 1
+          last: true
+          empty: false
+    SimplePostPageDTO:
+      title: Simple Post Page DTO
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/DomainPageDTO'
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimplePostDTO'
+      required:
+        - content
+      description: Domain Page extension for Simple Posts.
+      examples:
+        - domainPageType: simplePostPage
+          content:
+            - id: 8
+              postComplexityType: simplePost
+              title: Post Title
+              text: Post Text
+              creation: '2019-08-24'
+              modification: '2019-08-26'
+              creator:
+                userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                username: Username
+              nrOfLikes: 6
+              nrOfDislikes: 1
+              userStatus:
+                id:
+                  userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                  postId: 8
+                liked: true
+                disliked: false
+                reported: false
+          nrOfElements: 1
+          pageSize: 50
+          pageNumber: 1
+          totalPages: 1
+          last: true
+          empty: false
+    CompletePostPageDTO:
+      title: Complete Post Page DTO
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/DomainPageDTO'
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompletePostDTO'
+      required:
+        - content
+      description: Domain Page extension for Complete Posts.
+      examples:
+        - responses:
+            content:
+              - responses: {}
+                id: 8
+                title: Post Title
+                text: Post Text
+                creation: '2019-08-24'
+                modification: '2019-08-26'
+                creator:
+                  userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                  username: Username
+                nrOfLikes: 6
+                nrOfDislikes: 1
+                status: OPEN
+                userStatus:
+                  id:
+                    userType: simpleUser
+                    userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                    postId: 8
+                  liked: true
+                  disliked: false
+                  reported: false
+            domainPageType: completePostPage
+            nrOfElements: 1
+            pageSize: 1
+            pageNumber: 0
+            totalPages: 1
+            last: true
+            empty: false
+          id: 8
+          title: Post Title
+          text: Post Text
+          creation: '2019-08-24'
+          modification: '2019-08-26'
+          creator:
+            userType: simpleUser
+            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+            username: Username
+          nrOfLikes: 6
+          nrOfDislikes: 1
+          status: NO_PROBLEM
+          userStatus:
+            id:
+              userType: simpleUser
+              userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+              postId: 8
+            liked: true
+            disliked: false
+            reported: false
+    SimpleThreadDTO:
+      title: Simple Thread DTO
+      type: object
+      description: DTO containing basic information on a thread.
+      examples:
+        - threadComplexityType: simpleThread
+          id: 8
+          title: Thread Title
+          nrOfPosts: 4
+          status: OPEN
+          creation: '2019-08-24T14:15:22Z'
+          modification: '2019-08-24T14:15:22Z'
+          creator:
+            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+            username: Username
+          category:
+            id: 15
+            name: Category Name
+            description: Category Description
+          tags:
+            - id: 9
+              name: Tag Name
+              importance: LOW
+              color: 'rgb(789, 654, 321)'
+          userStatus:
+            id:
+              userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+              ThreadId: 8
+            watching: true
+            blocked: false
+      discriminator:
+        propertyName: threadComplexityType
+        mapping:
+          simpleThread: '#/components/schemas/SimpleThreadDTO'
+          completeThread: '#/components/schemas/CompleteThreadDTO'
+      properties:
+        threadComplexityType:
+          type: string
+          enum:
+            - simpleThread
+            - completeThread
+          description: Discriminator for the Thread DTO
+        id:
+          $ref: '#/components/schemas/ThreadId'
+        title:
+          type: string
+          minLength: 1
+          description: Title of the thread
+        nrOfPosts:
+          type: integer
+          format: int32
+          minimum: 0
+          description: How many posts does the thread have
+        status:
+          $ref: '#/components/schemas/ThreadStatus'
+        creation:
+          type: string
+          format: date-time
+          description: When was the thread created
+        modification:
+          type: string
+          format: date-time
+          description: When was the thread modificated last time
+        creator:
+          $ref: '#/components/schemas/SimpleUserDTO'
+        category:
+          $ref: '#/components/schemas/ForumCategoryDTO'
+        tags:
+          type: array
+          minItems: 1
+          description: What does does the thread have
+          items:
+            $ref: '#/components/schemas/TagDTO'
+        userStatus:
+          $ref: '#/components/schemas/ThreadUserStatusDTO'
+      required:
+        - threadComplexityType
+        - id
+        - title
+        - nrOfPosts
+        - status
+        - creation
+        - modification
+        - creator
+        - category
+        - tags
+        - userStatus
+    CompleteThreadDTO:
+      title: Complete Thread DTO
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SimpleThreadDTO'
+      properties:
+        text:
+          type: string
+          description: Text of the thread
+          minLength: 1
+          maxLength: 600
+        posts:
+          $ref: '#/components/schemas/CompletePostPageDTO'
+      examples:
+        - text: Thread Text
+          posts:
+            - content:
+                - id: 8
+                  postComplexityType: completePost
+                  title: Post Title
+                  text: Post Text
+                  creation: '2019-08-24'
+                  modification: '2019-08-26'
+                  creator:
+                    userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                    username: Username
+                  nrOfPlus: 6
+                  nrOfMinus: 1
+                  userStatus:
+                    id:
+                      userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                      postId: 8
+                    liked: true
+                    disliked: false
+                    reported: false
+              domainPageType: simplePage
+              nrOfElements: 1
+              pageSize: 50
+              pageNumber: 1
+              totalPages: 1
+              last: true
+              empty: false
+          threadComplexityType: completeThread
+          id: 8
+          title: Thread Title
+          nrOfPosts: 4
+          status: OPEN
+          creation: '2019-08-24T14:15:22Z'
+          modification: '2019-08-24T14:15:22Z'
+          creator:
+            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+            username: Username
+          category:
+            id: 15
+            name: Category Name
+            description: Category Description
+          tags:
+            - id: 9
+              name: Tag Name
+              importance: LOW
+              color: 'rgb(789, 654, 321)'
+          userStatus:
+            id:
+              userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+              ThreadId: 8
+            watching: true
+            blocked: false
+      description: 'DTO containing information on a thread, together with posts for it.'
+    CreateThreadDTO:
+      title: Create Thread DTO
+      type: object
+      description: DTO used during the creation of threads.
+      discriminator:
+        propertyName: editThreadComplexityType
+        mapping:
+          createThread: '#/components/schemas/CreateThreadDTO'
+          updateThread: '#/components/schemas/UpdateThreadDTO'
+      properties:
+        editThreadComplexityType:
+          type: string
+          enum:
+            - createThread
+            - updateThread
+        title:
+          type: string
+          maxLength: 80
+        text:
+          type: string
+          maxLength: 600
+        category:
+          $ref: '#/components/schemas/ForumCategoryId'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagId'
+      required:
+        - editThreadComplexityType
+        - title
+        - text
+        - category
+      examples:
+        - editThreadComplexityType: createThread
+          title: Thread Title
+          text: Thread Text
+          category: 1
+          tags:
+            - 2
+    UpdateThreadDTO:
+      title: Update Thread DTO
+      type: object
+      description: DTO used during the updating of threads.
+      allOf:
+        - $ref: '#/components/schemas/CreateThreadDTO'
+      properties:
+        id:
+          $ref: '#/components/schemas/ThreadId'
+        status:
+          $ref: '#/components/schemas/ThreadStatus'
+      required:
+        - id
+        - status
+      examples:
+        - editThreadComplexityType: updateThread
+          id: 1
+          status: OPEN
+          title: Thread Title
+          text: Thread Text
+          category: 1
+          tags:
+            - 2
+    SimplePostDTO:
+      title: Simple Post DTO
+      type: object
+      description: DTO containing basic information on a post.
+      examples:
+        - id: 8
+          title: Post Title
+          text: Post Text
+          creation: '2019-08-24'
+          modification: '2019-08-26'
+          creator:
+            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+            username: Username
+          nrOfLikes: 6
+          nrOfDislikes: 1
+          status: NO_PROBLEM
+          userStatus:
+            id:
+              userType: simpleUser
+              userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+              postId: 8
+            liked: true
+            disliked: false
+            reported: false
+      discriminator:
+        propertyName: postComplexityType
+        mapping:
+          simplePost: '#/components/schemas/SimplePostDTO'
+          completePost: '#/components/schemas/CompletePostDTO'
+      properties:
+        postComplexityType:
+          type: string
+          enum:
+            - simplePost
+            - completePost
+          description: Discriminator for the Post DTO
+        id:
+          $ref: '#/components/schemas/PostId'
+        title:
+          type: string
+          maxLength: 80
+          description: Title of the post
+        text:
+          type: string
+          maxLength: 600
+          description: Text of the post
+        creation:
+          type: string
+          format: date
+          description: When was the post created
+        modification:
+          type: string
+          format: date
+          description: When was the post modificated
+        creator:
+          $ref: '#/components/schemas/SimpleUserDTO'
+        nrOfLikes:
+          type: integer
+          format: int32
+          minimum: 0
+          description: How many people liked the post
+        nrOfDislikes:
+          type: integer
+          format: int32
+          minimum: 0
+          description: How many people disliked the post
+        status:
+          $ref: '#/components/schemas/PostStatus'
+        userStatus:
+          $ref: '#/components/schemas/PostUserStatusDTO'
+      required:
+        - id
+        - title
+        - text
+        - creation
+        - modification
+        - creator
+        - nrOfLikes
+        - nrOfDislikes
+        - status
+    CompletePostDTO:
+      title: Complete Post DTO
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SimplePostDTO'
+      properties:
+        responses:
+          $ref: '#/components/schemas/CompletePostPageDTO'
+      examples:
+        - responses:
+            content:
+              - responses: {}
+                postComplexityType: completePost
+                id: 8
+                title: Post Title
+                text: Post Text
+                creation: '2019-08-24'
+                modification: '2019-08-26'
+                creator:
+                  userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                  username: Username
+                nrOfLikes: 6
+                nrOfDislikes: 1
+                status: OPEN
+                userStatus:
+                  id:
+                    userType: simpleUser
+                    userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                    postId: 8
+                  liked: true
+                  disliked: false
+                  reported: false
+            domainPageType: completePostPage
+            nrOfElements: 1
+            pageSize: 1
+            pageNumber: 0
+            totalPages: 1
+            last: true
+            empty: false
+          id: 8
+          title: Post Title
+          text: Post Text
+          creation: '2019-08-24'
+          modification: '2019-08-26'
+          creator:
+            userType: simpleUser
+            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+            username: Username
+          nrOfLikes: 6
+          nrOfDislikes: 1
+          status: NO_PROBLEM
+          userStatus:
+            id:
+              userType: simpleUser
+              userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+              postId: 8
+            liked: true
+            disliked: false
+            reported: false
+      description: DTO containing all information on a post.
+    CreatePostDTO:
+      title: Create Post DTO
+      type: object
+      description: DTO used to create a new thread.
+      examples:
+        - editPostComplexityType: createPost
+          title: Post Title
+          text: Post Text
+          thread: 1
+      discriminator:
+        propertyName: editPostComplexityType
+        mapping:
+          createPost: '#/components/schemas/CreatePostDTO'
+          updatePost: '#/components/schemas/UpdatePostDTO'
+      properties:
+        editPostComplexityType:
+          type: string
+          enum:
+            - createPost
+            - updatePost
+        title:
+          type: string
+          minLength: 10
+          maxLength: 80
+        text:
+          type: string
+          maxLength: 600
+        thread:
+          $ref: '#/components/schemas/ThreadId'
+      required:
+        - editPostComplexityType
+        - title
+        - text
+        - thread
+    UpdatePostDTO:
+      title: Update Post DTO
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CreatePostDTO'
+      properties:
+        id:
+          $ref: '#/components/schemas/PostId'
+      required:
+        - id
+      description: DTO used to update an existing post.
+      examples:
+        - editPostComplexityType: updatePost
+          id: 8
+          title: Post Title
+          text: Post Text
+          thread: 1
+    PostWithThreadInformationDTO:
+      title: Post With Thread Information DTO
+      type: object
+      examples:
+        - post:
+            postComplexityType: simplePost
+            id: 8
+            title: Post Title
+            text: Post Text
+            creation: '2019-08-24'
+            modification: '2019-08-26'
+            creator:
+              userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+              username: Username
+            nrOfPlus: 6
+            nrOfMinus: 1
+            userStatus:
+              id:
+                userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                postId: 8
+              liked: true
+              disliked: false
+              reported: false
+          threadInformation:
+            id: 7
+            title: Thread Title
+      description: DTO containing complete post information with selected Thread Information.
+      properties:
+        post:
+          $ref: '#/components/schemas/SimplePostDTO'
+        threadInformation:
+          type: object
+          description: Basic information on a Thread
+          required:
+            - id
+            - title
+          properties:
+            id:
+              $ref: '#/components/schemas/ThreadId'
+            title:
+              type: string
+              minLength: 1
+              description: Title of the thread
+      required:
+        - post
+        - threadInformation
+    ForumCategoryDTO:
+      title: Forum Category DTO
+      type: object
+      description: DTO containing information on a forum category.
+      examples:
+        - id: e063cf0b-17f2-4437-957f-d9f478995ccc
+          name: Category Name
+          description: Category Description
+      properties:
+        id:
+          $ref: '#/components/schemas/ForumCategoryId'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 45
+          description: Forum Category name
+        description:
+          type: string
+          maxLength: 150
+          description: Foprum Category description
+      required:
+        - id
+        - name
+    TagDTO:
+      title: Tag DTO
+      type: object
+      description: DTO containing information on a tag.
+      examples:
+        - id: 5
+          name: Tag Name
+          importance: LOW
+          color: 'rgb(458, 789, 321)'
+      properties:
+        id:
+          $ref: '#/components/schemas/TagId'
+        name:
+          type: string
+          minLength: 1
+          maxLength: 45
+          description: tag name
+        importance:
+          $ref: '#/components/schemas/TagImportance'
+        color:
+          $ref: '#/components/schemas/Color'
+      required:
+        - id
+        - name
+        - importance
+        - color
+    ThreadUserStatusDTO:
+      title: Thread User Status DTO
+      type: object
+      description: DTO containing the opinion of a user on a thread.
+      examples:
+        - id:
+            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+            threadId: 5
+          watching: true
+          blocked: false
+      properties:
+        id:
+          type: object
+          required:
+            - userId
+            - threadId
+          description: ID containing information to which thread and user does the status reference
+          properties:
+            userId:
+              $ref: '#/components/schemas/UserID'
+            threadId:
+              $ref: '#/components/schemas/ThreadId'
+        watching:
+          type: boolean
+          description: Is the user watching the post
+        blocked:
+          type: boolean
+          description: Did the user block the post
+      required:
+        - id
+        - watching
+        - blocked
+    PostUserStatusDTO:
+      title: Post User Status DTO
+      type: object
+      description: DTO containing the opinion of a user on a post.
+      examples:
+        - id:
+            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+            postId: 5
+          liked: true
+          disliked: false
+          reported: false
+      properties:
+        id:
+          type: object
+          required:
+            - userId
+            - postId
+          description: ID containing information to which post and user does the status reference
+          properties:
+            userId:
+              $ref: '#/components/schemas/UserID'
+            postId:
+              $ref: '#/components/schemas/PostId'
+        liked:
+          type: boolean
+          description: Does the user like the post
+        disliked:
+          type: boolean
+          description: Does the user dislike the post
+        reported:
+          type: boolean
+          description: Did the user report the post
+      required:
+        - id
+        - liked
+        - disliked
+        - reported
+    ThreadId:
+      type: string
+      title: Thread Id
+      description: Id of the Thread database entity.
+      format: uuid
+    PostId:
+      type: string
+      title: Post Id
+      description: Id of the Post database entity.
+      format: uuid
+    TagId:
+      type: string
+      title: Tag Id
+      description: Id of the Tag database entity.
+      format: uuid
+    ForumCategoryId:
+      type: string
+      title: Forum Category Id
+      description: ID of the Forum Category database entity.
+      examples:
+        - 14
+      format: uuid
+    ThreadStatus:
+      type: string
+      title: ThreadStatus
+      enum:
+        - OPEN
+        - CLOSED
+      examples:
+        - OPEN
+      description: Enum containing the possible thread statuses.
+    TagImportance:
+      type: string
+      title: Tag Importance
+      enum:
+        - LOW
+        - MEDIUM
+        - HIGH
+        - ADMIN
+      description: Enum containing the possible importance levels for tags.
+      examples:
+        - LOW
+    PostStatus:
+      type: string
+      title: Post Status
+      enum:
+        - NO_PROBLEM
+        - PENDING
+        - DELETED
+      examples:
+        - NO_PROBLEM
+      description: 'Status of a post. If enought people report a post, it will automaticly change to ''PENDING''.'
+    Color:
+      type: string
+      title: Color
+      pattern: 'rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)'
+      description: Small schema that declared the color format.
+      minLength: 11
+      maxLength: 18
+      examples:
+        - 'rgb(120, 120, 120)'
+    UserSettingsDTO:
+      title: UserSettingsDTO
+      x-stoplight:
+        id: knzlkuom7wbvm
+      type: object
+      description: DTO for user settings - both Front- and Backend.
+      properties:
+        userId:
+          $ref: '#/components/schemas/UserID'
+          x-stoplight:
+            id: qkoeca38rsfct
+        language:
+          x-stoplight:
+            id: gxphxqa4jcg89
+          enum:
+            - POLISH
+            - ENGLISH
+          default: ENGLISH
+        mode:
+          x-stoplight:
+            id: z2vy99phaffr1
+          enum:
+            - DARK
+            - LIGTH
+            - COLOR_BLIND
+          default: LIGTH
+      examples:
+        - userId: 497f6eca-6276-4993-bfeb-53cbbbba6f08
+          language: ENGLISH
+          mode: LIGTH
+    RankingType:
+      title: RankingType
+      x-stoplight:
+        id: kguzmjpqgvull
+      enum:
+        - TOP_SERIES_OF_ALL_TIME
+        - TOP_AIRING
+        - TOP_MOVIES_OF_ALL_TIME
+      description: Enum for selecting which type of ranking should be retrieved.
+    PageNumber:
+      title: PageNumber
+      x-stoplight:
+        id: 89b8cx75ey1lv
+      type: integer
+      format: int64
+      minimum: 0
+      example: 5
+      default: 0
+  securitySchemes:
+    Keycloak_JWT:
+      type: http
+      scheme: bearer
+      description: 'Authentification used by all microservices, aquired from a Keycloak Service'
+security:
+  - Keycloak_JWT: []
+tags:
+  - name: Models
+    description: Swagger file containing all models used in the project

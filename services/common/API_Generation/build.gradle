@@ -1,0 +1,103 @@
+plugins {
+	id "org.openapi.generator" version "6.6.0"
+}
+
+dependencies {
+	api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
+	api "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+}
+
+allprojects {
+	javadoc {
+		source = sourceSets.main.allJava
+		classpath = configurations.compileClasspath
+	}
+}
+
+compileJava {
+	//Create the generator meta information
+	dependsOn 'generateMetaInformation'
+
+	//Create the files
+	dependsOn 'generateYmlFiles'
+
+	//And apply the prettier
+	dependsOn spotlessApply
+}
+
+//Meta information when generating
+task generateMetaInformation(type: org.openapitools.generator.gradle.plugin.tasks.MetaTask) {
+	generatorName = "spring"
+	packageName = "anime.app"
+	outputFolder = "$buildDir/meta"
+}
+
+//Go thought every file and generate the data
+task generateYmlFiles(dependsOn: 'generateMetaInformation') {
+	for (Tuple2<String, String> data : [
+			new Tuple2<>("Models.yaml", "Models"),
+			new Tuple2<>("User-Service.yaml", "User"),
+			new Tuple2<>("Achievement-Service.yaml", "Achievement"),
+			new Tuple2<>("Anime-Service.yaml", "Anime"),
+			new Tuple2<>("Forum-Service.yaml", "Forum"),
+	]) {
+		generateClassesFromOpenApiSpecification(data.getV1(), data.getV2());
+	}
+}
+
+//Generate the data with the same generator and other configuration
+void generateClassesFromOpenApiSpecification(String ymlFileName, String taskName) {
+	String fullTaskName = "generate${taskName}"
+	tasks.register(fullTaskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+		//Generator information
+		generatorName = "spring"
+		library = "spring-boot"
+
+		//Spec Information
+		validateSpec = true
+		skipValidateSpec = false
+		inputSpec = "$projectDir/openapi/${ymlFileName}"
+		templateDir = "$projectDir/templates/java"
+
+		//Generation and Output information
+		outputDir = "$buildDir/generated"
+		apiPackage = "anime.app.api"
+		invokerPackage = "anime.app.openapi.invoker"
+		//Models must be in one package, because when they aren't cross-referencing them between different files generated many class files
+		modelPackage = "anime.app.dto"
+		configOptions = [
+				'performBeanValidation':'true',
+				'delegatePattern':'false',
+				'dateLibrary': 'java8-localdatetime',
+				'interfaceOnly': 'true',
+				'generateSupportingFiles': 'true'
+		]
+	}
+
+	compileJava.dependsOn(fullTaskName)
+}
+
+spotless {
+	java {
+		target "${buildDir}/generated/src/main/java"
+	}
+
+	typescript {
+		target "${buildDir}/generated/src/typescript"
+		toggleOffOn()
+		prettier(['prettier': '3.0.2'])
+				.config(['tabWidth': 4])
+	}
+}
+
+//Automatically add the generated prettified classes as SourceSet, so gradle recognises them
+sourceSets {
+	main {
+		java {
+			srcDirs = [
+					"src/main/java",
+					"${buildDir}/spotless/spotlessJava/build/generated/src/main/java"
+			]
+		}
+	}
+}

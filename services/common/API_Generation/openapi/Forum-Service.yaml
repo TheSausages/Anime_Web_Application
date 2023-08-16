@@ -1,0 +1,780 @@
+openapi: 3.1.0
+x-stoplight:
+  id: h4w2e6z21nfn6
+info:
+  title: Forum-Service
+  version: '1.0'
+  contact:
+    name: <Contact Person>
+    url: https://opensource.org/license/mit/
+    email: <Contact Email>
+  license:
+    name: MIT
+    identifier: https://opensource.org/license/mit/
+  termsOfService: <ToS URL>
+  summary: Service for handling the build-in forum
+  description: 'Service for handling the build-in forum. Contains thread/post information, but also relation between these and the user.'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /forum/tags:
+    get:
+      summary: Get all tags Endpoint
+      responses:
+        '200':
+          description: OK - No errors occured
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Set of all tags in the database
+                uniqueItems: true
+                minItems: 0
+                items:
+                  $ref: Models.yaml#/components/schemas/TagDTO
+              examples:
+                Successfull Example:
+                  value:
+                    - id: e063cf0b-17f2-4437-957f-d9f478995ccc
+                      name: Tag Name
+                      importance: LOW
+                      color: 'rgb(458, 789, 321)'
+        '401':
+          description: Unauthorized - The user didn't authenticate correctly
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Authentication Error Example:
+                  value:
+                    message: Authentication Error
+                    status: 401
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+        '500':
+          description: Internal Server Error - Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Validation Error:
+                  value:
+                    message: Please contact the administration
+                    status: 500
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: get-forum-tags
+      description: Endpoint used to get all tags from the database.
+  /forum/categories:
+    get:
+      summary: Get all forum categories Endpoint
+      responses:
+        '200':
+          description: OK - No error occured
+          content:
+            application/json:
+              schema:
+                type: array
+                uniqueItems: true
+                minItems: 0
+                description: Set of all categories in the database
+                items:
+                  $ref: Models.yaml#/components/schemas/ForumCategoryDTO
+              examples:
+                Successfull Response:
+                  value:
+                    - id: e063cf0b-17f2-4437-957f-d9f478995ccc
+                      name: Category Name
+                      description: Category Description
+        '401':
+          description: Unauthorized - The user didn't authenticate correctly
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Authentication Error Example:
+                  value:
+                    message: Authentication Error
+                    status: 401
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+        '500':
+          description: Internal Server Error - Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Validation Error:
+                  value:
+                    message: Please contact the administration
+                    status: 500
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: get-forum-categories
+      description: Endpoint used to get all forum categories from the database.
+  '/forum/search/{pageNumber}':
+    get:
+      summary: Search forum Endpoint
+      responses:
+        '200':
+          description: OK - No error occured
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/SimpleThreadPageDTO
+              examples:
+                Page of Simple Thread DTO Example:
+                  value:
+                    domainPageType: simpleThreadPage
+                    content:
+                      - threadComplexityType: simpleThread
+                        id: e063cf0b-17f2-4437-957f-d9f478995ccc
+                        title: Thread Title
+                        nrOfPosts: 4
+                        status: OPEN
+                        creation: '2019-08-24T14:15:22Z'
+                        modification: '2019-08-24T14:15:22Z'
+                        creator:
+                          userType: simpleUser
+                          userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                          username: Username
+                        category:
+                          id: e063cf0b-17f2-4437-957f-d9f478995ccc
+                          name: Category Name
+                          description: Category Description
+                        tags:
+                          - id: e063cf0b-17f2-4437-957f-d9f478995ccc
+                            name: Tag Name
+                            importance: LOW
+                            color: 'rgb(789, 654, 321)'
+                        userStatus:
+                          id:
+                            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                            threadId: e063cf0b-17f2-4437-957f-d9f478995ccc
+                          watching: true
+                          blocked: false
+                    nrOfElements: 1
+                    pageSize: 1
+                    pageNumber: 1
+                    totalPages: 1
+                    last: true
+                    empty: false
+        '401':
+          description: Unauthorized - The user didn't authenticate correctly
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Authentication Error Example:
+                  value:
+                    message: Authentication Error
+                    status: 401
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+        '404':
+          description: Not Found - One of the tags or the category was not found
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Not Found Error:
+                  value:
+                    message: Not Found Error
+                    status: 404
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: search-threads-using-query
+      description: Endpoint used to search for threads in the database using a query.
+    parameters:
+      - schema:
+          type: integer
+          $ref: Models.yaml#/components/schemas/PageNumber
+        name: pageNumber
+        in: path
+        required: true
+        description: Number of the requested threads page
+  '/forum/newest/{pageNumber}':
+    parameters:
+      - schema:
+          type: integer
+          $ref: Models.yaml#/components/schemas/PageNumber
+        name: pageNumber
+        in: path
+        description: Number of the requested threads page
+        required: true
+    get:
+      summary: Get newest threads Endpoint
+      responses:
+        '200':
+          description: OK - No error occured
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/SimpleThreadPageDTO
+              examples:
+                Page of Simple Thread DTO Example:
+                  value:
+                    domainPageType: simpleThreadPage
+                    content:
+                      - threadComplexityType: simpleThread
+                        id: e063cf0b-17f2-4437-957f-d9f478995ccc
+                        title: Thread Title
+                        nrOfPosts: 4
+                        status: OPEN
+                        creation: '2019-08-24T14:15:22Z'
+                        modification: '2019-08-24T14:15:22Z'
+                        creator:
+                          userType: simpleUser
+                          userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                          username: Username
+                        category:
+                          id: e063cf0b-17f2-4437-957f-d9f478995ccc
+                          name: Category Name
+                          description: Category Description
+                        tags:
+                          - id: e063cf0b-17f2-4437-957f-d9f478995ccc
+                            name: Tag Name
+                            importance: LOW
+                            color: 'rgb(789, 654, 321)'
+                        userStatus:
+                          id:
+                            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                            threadId: e063cf0b-17f2-4437-957f-d9f478995ccc
+                          watching: true
+                          blocked: false
+                    nrOfElements: 1
+                    pageSize: 1
+                    pageNumber: 1
+                    totalPages: 1
+                    last: true
+                    empty: false
+        '401':
+          description: Unauthorized - The user didn't authenticate correctly
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Authentication Error Example:
+                  value:
+                    message: Authentication Error
+                    status: 401
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: get-newest-threads
+      description: Endpoint used to get a page of threads sorted by newest elements
+  '/forum/thread/{threadId}':
+    parameters:
+      - schema:
+          type: integer
+          $ref: Models.yaml#/components/schemas/ThreadId
+        name: threadId
+        in: path
+        required: true
+        description: Id of the requested thread
+    get:
+      summary: Get thread by it's Id Endpoint
+      responses:
+        '200':
+          description: OK - The thread is returned correctly
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/CompleteThreadDTO
+              examples:
+                Successfull Example:
+                  value:
+                    text: Thread Text
+                    posts:
+                      - content:
+                          - id: 8
+                            title: Post Title
+                            text: Post Text
+                            creation: '2019-08-24'
+                            modification: '2019-08-26'
+                            creator:
+                              userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                              username: Username
+                            nrOfPlus: 6
+                            nrOfMinus: 1
+                            userStatus:
+                              id:
+                                userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                                postId: 8
+                              liked: true
+                              disliked: false
+                              reported: false
+                        nrOfElements: 1
+                        pageSize: 50
+                        pageNumber: 1
+                        totalPages: 1
+                        last: true
+                        empty: false
+                    threadComplexityType: completeThread
+                    id: 8
+                    title: Thread Title
+                    nrOfPosts: 4
+                    status: OPEN
+                    creation: '2019-08-24T14:15:22Z'
+                    modification: '2019-08-24T14:15:22Z'
+                    creator:
+                      userType: simpleUser
+                      userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                      username: Username
+                    category:
+                      id: 15
+                      name: Category Name
+                      description: Category Description
+                    tags:
+                      - id: 9
+                        name: Tag Name
+                        importance: LOW
+                        color: 'rgb(789, 654, 321)'
+                    userStatus:
+                      id:
+                        userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                        ThreadId: 8
+                      watching: true
+                      blocked: false
+        '401':
+          description: Unauthorized - The user didn't authenticate correctly
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Authentication Error Example:
+                  value:
+                    message: Authentication Error
+                    status: 401
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+        '404':
+          description: Not Found - the thread was not found
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Not Found Error Example:
+                  value:
+                    message: Not Found Error
+                    status: 404
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: get-thread-by-threadId
+      description: Endpoint do get a thread by it's Id
+  /forum/thread/status:
+    put:
+      summary: Update user thread status Endpoint
+      responses:
+        '204':
+          description: No Content - the status was successfully updated
+        '401':
+          description: Unauthorized - The user didn't authenticate correctly or tried to update the status of another user
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Authentication Error Example:
+                  value:
+                    message: Authentication Error
+                    status: 401
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+        '404':
+          description: Not Found - The thread could not be found
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Thread Not Found Example:
+                  value:
+                    message: Not Found Error
+                    status: 404
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: update-user-thread-status
+      description: Endpoint used to update the user status on a thread
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: Models.yaml#/components/schemas/ThreadUserStatusDTO
+            examples:
+              Update Status Example:
+                value:
+                  id:
+                    userId: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+                    threadId: e063cf0b-17f2-4437-957f-d9f478995ccc
+                  watching: true
+                  blocked: false
+        description: Data containing all necessery information to update the status
+  /forum/thread:
+    post:
+      summary: Create new thread Endpoint
+      responses:
+        '201':
+          description: Created - the thread was successfully created
+        '401':
+          description: Unauthorized - The user didn't authenticate correctly
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Authentication Error Example:
+                  value:
+                    message: Authentication Error
+                    status: 401
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: create-thread
+      description: Endpoint used to create a new Thread
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: Models.yaml#/components/schemas/CreateThreadDTO
+            examples:
+              Create Thread Example:
+                value:
+                  editThreadComplexityType: createThread
+                  title: Thread Title
+                  text: Thread Text
+                  category: e063cf0b-17f2-4437-957f-d9f478995ccc
+                  tags:
+                    - e063cf0b-17f2-4437-957f-d9f478995ccc
+        description: Body containing all necessery data to create a new thread
+    put:
+      summary: Update thread using it's Id Endpoint
+      operationId: update-thread
+      responses:
+        '204':
+          description: No Content - the thread was successfully updated
+      description: Endpoint to update a thread using it's id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: Models.yaml#/components/schemas/UpdateThreadDTO
+            examples:
+              Update Thread Example:
+                value:
+                  editThreadComplexityType: updateThread
+                  id: e063cf0b-17f2-4437-957f-d9f478995ccc
+                  status: OPEN
+                  title: Thread Title
+                  text: Thread Text
+                  category: e063cf0b-17f2-4437-957f-d9f478995ccc
+                  tags:
+                    - e063cf0b-17f2-4437-957f-d9f478995ccc
+        description: Data used to update a thread
+  '/forum/{threadId}/post':
+    parameters:
+      - schema:
+          type: integer
+          $ref: Models.yaml#/components/schemas/ThreadId
+        name: threadId
+        in: path
+        required: true
+        description: Id of the thread for which we want the posts
+    get:
+      summary: Get a page of posts for a thread
+      responses:
+        '200':
+          description: OK - The posts where correctly found
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/CompletePostPageDTO
+              examples:
+                Page of Posts Example:
+                  value:
+                    domainPageType: postPage
+                    content:
+                      - id: 8
+                        postComplexityType: completePost
+                        title: Post Title
+                        text: Post Text
+                        creation: '2019-08-24'
+                        modification: '2019-08-26'
+                        creator:
+                          userType: simpleUser
+                          userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                          username: Username
+                        nrOfLikes: 6
+                        nrOfDislikes: 1
+                        userStatus:
+                          id:
+                            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                            postId: 8
+                          liked: true
+                          disliked: false
+                          reported: false
+                    nrOfElements: 1
+                    pageSize: 50
+                    pageNumber: 1
+                    totalPages: 1
+                    last: true
+                    empty: false
+        '401':
+          description: Unauthorized - The user didn't authenticate correctly
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Authentication Error Example:
+                  value:
+                    message: Authentication Error
+                    status: 401
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: get-posts-for-thread-by-threadId
+      x-spring-paginated: true
+      description: Endpoint to get a post page for a thread
+  /forum/post/status:
+    put:
+      summary: Update user post status Endpoint
+      responses:
+        '204':
+          description: No Content - The status was succesasfully updated
+        '400':
+          description: Bad Request - The status belongs to another post
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Wrong Post Id Example:
+                  value:
+                    message: bad Request Error
+                    status: 400
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+        '401':
+          description: 'Unauthorized - The user didn''t authenticate correctly, or the post belongs to another user'
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Authentication Error Example:
+                  value:
+                    message: Authentication Error
+                    status: 401
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+        '404':
+          description: Not Found - The post could not be found
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Post Not Found Example:
+                  value:
+                    message: Not Found Error
+                    status: 404
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: update-user-post-status
+      description: Endpoint used to update the user status on a post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: Models.yaml#/components/schemas/PostUserStatusDTO
+            examples:
+              Update Post Example:
+                value:
+                  id:
+                    userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                    postId: e063cf0b-17f2-4437-957f-d9f478995ccc
+                  liked: true
+                  disliked: false
+                  reported: false
+        description: Data containing all necessery information to update the status
+  /forum/post:
+    parameters: []
+    post:
+      summary: Create a post for a thread Endpoint
+      responses:
+        '201':
+          description: Created - The post was successfully created
+        '401':
+          description: Unauthorized - The user didn't authenticate correctly
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Authentication Error Example:
+                  value:
+                    message: Authentication Error
+                    status: 401
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: create-post
+      description: Endpoint used to create a new post and connect it to a selected thread
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: Models.yaml#/components/schemas/CreatePostDTO
+            examples:
+              Create Post Example:
+                value:
+                  editPostComplexityType: createPost
+                  title: Post Title
+                  text: Post Text
+                  thread: e063cf0b-17f2-4437-957f-d9f478995ccc
+        description: Data used to create a new post
+    put:
+      summary: Update existing post Endpoint
+      operationId: update-post
+      responses:
+        '204':
+          description: No Content - the post was successfully created
+      description: Endpoint used to update an existing post.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: Models.yaml#/components/schemas/UpdatePostDTO
+            examples:
+              Update Post Example:
+                value:
+                  editPostComplexityType: updatePost
+                  id: e063cf0b-17f2-4437-957f-d9f478995ccc
+                  title: Post Title
+                  text: Post Text
+                  thread: e063cf0b-17f2-4437-957f-d9f478995ccc
+        description: Data used to update the thread
+  '/forum/post/{postId}':
+    parameters:
+      - schema:
+          type: integer
+          $ref: Models.yaml#/components/schemas/PostId
+        name: postId
+        in: path
+        required: true
+        description: Id of the post for which we want the responses
+    get:
+      summary: Get responses for a post Endpoint
+      responses:
+        '200':
+          description: OK - No problem Occured
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/CompletePostPageDTO
+              examples:
+                Successfull Example:
+                  value:
+                    content:
+                      - responses:
+                          content:
+                            - responses: {}
+                              postComplexityType: completePost
+                              id: 8
+                              title: Post Title
+                              text: Post Text
+                              creation: '2019-08-24'
+                              modification: '2019-08-26'
+                              creator:
+                                userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                                username: Username
+                              nrOfLikes: 6
+                              nrOfDislikes: 1
+                              status: OPEN
+                              userStatus:
+                                id:
+                                  userType: simpleUser
+                                  userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                                  postId: 8
+                                liked: true
+                                disliked: false
+                                reported: false
+                          domainPageType: completePostPage
+                          nrOfElements: 1
+                          pageSize: 1
+                          pageNumber: 0
+                          totalPages: 1
+                          last: true
+                          empty: false
+                        id: 8
+                        title: Post Title
+                        text: Post Text
+                        creation: '2019-08-24'
+                        modification: '2019-08-26'
+                        creator:
+                          userType: simpleUser
+                          userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                          username: Username
+                        nrOfLikes: 6
+                        nrOfDislikes: 1
+                        status: NO_PROBLEM
+                        userStatus:
+                          id:
+                            userType: simpleUser
+                            userId: 2c4a230c-5085-4924-a3e1-25fb4fc5965b
+                            postId: 8
+                          liked: true
+                          disliked: false
+                          reported: false
+                    domainPageType: completePostPage
+                    nrOfElements: 1
+                    pageSize: 1
+                    pageNumber: 0
+                    totalPages: 1
+                    last: true
+                    empty: false
+        '401':
+          description: Unauthorized - The user didn't authenticate correctly
+          content:
+            application/json:
+              schema:
+                $ref: Models.yaml#/components/schemas/ErrorDTO
+              examples:
+                Authentication Error Example:
+                  value:
+                    message: Authentication Error
+                    status: 401
+                    timestamp: '2019-08-24T14:15:22Z'
+                    code: 3af3fb4d-5baf-4748-9a29-747d2f81b381
+      operationId: get-responses-for-post-by-postId
+      description: Endpoint used to get the responses page to a post
+      x-spring-paginated: true
+components:
+  securitySchemes:
+    Keycloak_JWT:
+      type: http
+      scheme: bearer
+      description: 'Authentification used by all microservices, aquired from a Keycloak Service'
+security:
+  - Keycloak_JWT: []
+tags:
+  - name: Achievements Earnable
+    description: 'Depending on user actions, achievements can be earned'
+  - name: External Communication
+    description: This microservice/endpoint communicates with an external API
+  - name: Keycloak
+    description: This microservice/endpoint uses Keycloak for authorization
+  - name: User information
+    description: This endpoint will return some sort of user information

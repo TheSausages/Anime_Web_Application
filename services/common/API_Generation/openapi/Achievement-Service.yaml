@@ -1,0 +1,32 @@
+openapi: 3.1.0
+x-stoplight:
+  id: zvdgj65zna2j3
+info:
+  title: Achievement-Service
+  version: '1.0'
+  summary: Service for sending and checking if a user has earned an achievement
+  description: 'Service for sending and checking if a user has earned an achievement. This service does not have an standard endpoint, but connects to at least 2 queues, and connects to a database.'
+  contact:
+    name: <Contact Person>
+    url: https://opensource.org/license/mit/
+    email: <Contact Email>
+  license:
+    identifier: https://opensource.org/license/mit/
+    name: MIT
+  termsOfService: <ToS URL>
+servers:
+  - url: 'http://localhost:8080'
+paths: {}
+components:
+  securitySchemes:
+    Keycloak_JWT:
+      type: http
+      scheme: bearer
+      description: 'Authentification used by all microservices, aquired from a Keycloak Service'
+security:
+  - Keycloak_JWT: []
+tags:
+  - name: Achievements Earnable
+    description: Depending on user actions, achievements can be earned
+  - name: Internal
+    description: This microservice is not availabe to the user and is used internally

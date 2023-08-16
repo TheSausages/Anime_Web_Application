@@ -1,0 +1,56 @@
+plugins {
+	id 'org.springframework.boot' version '3.2.0-M1'
+	id 'io.spring.dependency-management' version '1.1.2'
+}
+
+version = "0.0.1-SNAPSHOT"
+
+allprojects {
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'org.springframework.boot'
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
+
+	dependencyManagement {
+		imports {
+			mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+		}
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}
+
+dependencies {
+	// Apis
+	implementation project(":API_Generation")
+	api "org.springframework.boot:spring-boot-starter-web:${springVersion}"
+	api "org.springframework.boot:spring-boot-starter-actuator:${springVersion}"
+	api "org.springframework.boot:spring-boot-starter-validation:${springVersion}"
+	api "org.springframework.boot:spring-boot-starter-security:${springVersion}"
+	api "org.springframework.boot:spring-boot-starter-data-rest:${springVersion}"
+	api "org.springframework.cloud:spring-cloud-starter-openfeign:${springCloudOpenfeignVersion}"
+	api "org.springframework.security:spring-security-oauth2-resource-server:${springSecurityVersion}"
+	api "org.springframework.security:spring-security-oauth2-jose:${springSecurityVersion}"
+	// Only for WebClient, when a new synchronous client is added replace
+	api "org.springframework.boot:spring-boot-starter-webflux:${springVersion}"
+
+	// Runtime
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	runtimeOnly "io.micrometer:micrometer-registry-prometheus:${prometheusVersion}"
+
+	// Annotation Processors
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springConfigurationAnnotationProcessorVersion}"
+	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+	// Testing
+	api "org.springframework.boot:spring-boot-starter-test:${springVersion}"
+	api "org.springframework.security:spring-security-test:${springSecurityVersion}"
+	api "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+	api "com.github.dasniko:testcontainers-keycloak:3.0.0"
+}

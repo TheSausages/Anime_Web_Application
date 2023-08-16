@@ -1,0 +1,9 @@
+dependencies {
+	implementation project(":Spring_Base")
+
+	testImplementation files(project(':Spring_Base').sourceSets.test.output.classesDirs)
+}
+
+test {
+	useJUnitPlatform()
+}
