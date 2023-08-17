@@ -7,14 +7,6 @@ plugins {
 
 version = "1.0.0"
 
-//allprojects {
-//    dependencies {
-//        // Add lombok for use in generated classes
-//        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-////        api "org.projectlombok:lombok:${lombokVersion}"
-//    }
-//}
-
 dependencies {
     // Add lombok for use in generated classes
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
