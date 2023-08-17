@@ -59,7 +59,7 @@ subprojects { sub ->
     tasks.register('copyKeycloakRealm', Copy) {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
         from "${rootDir}${File.separator}docker${File.separator}keycloak${File.separator}realm-export.json"
-        into "${projectDir}/src/test/resources"
+        into "${projectDir}/src/test/resources/realm"
     }
 
     processTestResources {

@@ -32,9 +32,6 @@ public class BaseIntegrationTest {
         );
 
     @Autowired
-    protected ObjectMapper mapper;
-
-    @Autowired
     protected WebApplicationContext context;
 
     protected WebTestClient webTestClient;
@@ -42,7 +39,7 @@ public class BaseIntegrationTest {
     protected static KeycloakContainer keycloak = new KeycloakContainer(
         "quay.io/keycloak/keycloak:22.0.0"
     )
-        .withRealmImportFile("realm-export.json")
+        .withRealmImportFile("realm/realm-export.json")
         .withAdminUsername("admin")
         .withAdminPassword("Password1")
         .withExposedPorts(8080)
