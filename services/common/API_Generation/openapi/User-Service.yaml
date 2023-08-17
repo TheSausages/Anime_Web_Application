@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 x-stoplight:
   id: vif9xx7piwb29
 info:
@@ -7,21 +7,20 @@ info:
   contact:
     name: <Contact Person>
     url: https://opensource.org/license/mit/
-    email: <Contact Email>
+    email: x@gmail.com
   license:
+    url: http://localhost:3000
     name: MIT
-    identifier: https://opensource.org/license/mit/
-  termsOfService: <ToS URL>
-  summary: Service for handling user information.
+  termsOfService: http://localhost:3000
   description: 'Service for handling user information. This consists of both user info (ex. description), but also user settings (ex. preferred language or light/dark mode). '
 servers:
-  - url: 'http://localhost:3000'
+  - url: http://localhost:3000
 paths:
   '/user/{userId}':
     parameters:
       - schema:
           type: string
-          $ref: Models.yaml#/components/schemas/UserID
+          $ref: ./Models.yaml#/components/schemas/UserID
         name: userId
         in: path
         required: true
@@ -34,7 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/CompleteUserDTO
+                $ref: ./Models.yaml#/components/schemas/CompleteUserDTO
               examples:
                 Successfull Example:
                   value:
@@ -124,7 +123,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Not Found Error Example:
                   value:
@@ -137,7 +136,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Validation Error:
                   value:
@@ -163,7 +162,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/UserSettingsDTO
+                $ref: ./Models.yaml#/components/schemas/UserSettingsDTO
               examples:
                 Successfull Response:
                   value:

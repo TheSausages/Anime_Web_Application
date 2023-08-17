@@ -17,7 +17,45 @@ subprojects { sub ->
         sourceCompatibility = '17'
     }
 
-    // Copy the realm so the integration tests will run
+    spotless {
+        encoding 'UTF-8'
+        enforceCheck true
+
+        java {
+            googleJavaFormat('1.17.0')
+
+            importOrder()
+            removeUnusedImports()
+            formatAnnotations()
+            toggleOffOn()
+            endWithNewline()
+
+            // Versions 3.x.x throw na error, so downgrade is needed
+            prettier(['prettier': '2.8.8', 'prettier-plugin-java': '2.2.0'])
+                    .config(['parser': 'java', 'tabWidth': 4])
+        }
+
+        typescript {
+            toggleOffOn()
+            target "${buildDir}/generated/src/typescript"
+
+            tsfmt('7.2.2')
+                    .config(['indentSize': 4, 'convertTabsToSpaces': true])
+            endWithNewline()
+
+            prettier('prettier': '2.8.8').config(['parser': 'java', 'tabWidth': 4])
+        }
+
+        format 'misc', {
+            target '*.gradle', '*.md', '.gitignore'
+
+            trimTrailingWhitespace()
+            indentWithSpaces(4)
+            endWithNewline()
+        }
+    }
+
+    // Copy the realm to each service so the integration tests will run
     tasks.register('copyKeycloakRealm', Copy) {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
         from "${rootDir}${File.separator}docker${File.separator}keycloak${File.separator}realm-export.json"
@@ -27,24 +65,4 @@ subprojects { sub ->
     processTestResources {
         dependsOn copyKeycloakRealm
     }
-
-    //Format the spotless prettier
-    spotless {
-        encoding 'UTF-8'
-        enforceCheck true
-
-        java {
-            googleJavaFormat()
-
-            importOrder()
-            removeUnusedImports()
-            formatAnnotations()
-            toggleOffOn()
-
-            //Use the prettier to format the generated classes
-            prettier(['prettier': '3.0.2', 'prettier-plugin-java': '2.2.0'])
-                    .config(['parser': 'java', 'tabWidth': 4])
-        }
-    }
-
 }

@@ -1,21 +1,20 @@
-openapi: 3.1.0
+openapi: 3.0.0
 x-stoplight:
   id: zvdgj65zna2j3
 info:
   title: Achievement-Service
   version: '1.0'
-  summary: Service for sending and checking if a user has earned an achievement
   description: 'Service for sending and checking if a user has earned an achievement. This service does not have an standard endpoint, but connects to at least 2 queues, and connects to a database.'
   contact:
     name: <Contact Person>
     url: https://opensource.org/license/mit/
-    email: <Contact Email>
+    email: x@gmail.com
   license:
-    identifier: https://opensource.org/license/mit/
+    url: http://localhost:3000
     name: MIT
-  termsOfService: <ToS URL>
+  termsOfService: http://localhost:3000
 servers:
-  - url: 'http://localhost:8080'
+  - url: http://localhost:8080
 paths: {}
 components:
   securitySchemes:

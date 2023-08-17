@@ -1,103 +1,167 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+import org.openapitools.generator.gradle.plugin.tasks.MetaTask
+
 plugins {
-	id "org.openapi.generator" version "6.6.0"
+    id "org.openapi.generator" version "6.6.0"
 }
+
+version = "1.0.0"
+
+//allprojects {
+//    dependencies {
+//        // Add lombok for use in generated classes
+//        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+////        api "org.projectlombok:lombok:${lombokVersion}"
+//    }
+//}
 
 dependencies {
-	api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
-	api "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
-}
+    // Add lombok for use in generated classes
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
-allprojects {
-	javadoc {
-		source = sourceSets.main.allJava
-		classpath = configurations.compileClasspath
-	}
-}
+    // These deppendencies are used in the generated classes
+    // As they are needed in other services, they are apis
+    api "org.springframework.boot:spring-boot-starter-web:${springVersion}"
+    api "org.springframework.boot:spring-boot-starter-validation:${springVersion}"
+    api "org.springdoc:springdoc-openapi-ui:1.7.0"
+    api "org.springframework.data:spring-data-commons:2.6.1"
 
-compileJava {
-	//Create the generator meta information
-	dependsOn 'generateMetaInformation'
+    api "io.springfox:springfox-swagger2:3.0.0"
+    api "io.springfox:springfox-swagger-ui:3.0.0"
+    api 'org.openapitools:jackson-databind-nullable:0.2.2'
 
-	//Create the files
-	dependsOn 'generateYmlFiles'
+    api 'javax.validation:validation-api:2.0.1.Final'
+    api 'javax.annotation:javax.annotation-api:1.3.2'
+    api 'jakarta.validation:jakarta.validation-api:3.0.1'
+    api 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    api 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1'
 
-	//And apply the prettier
-	dependsOn spotlessApply
-}
-
-//Meta information when generating
-task generateMetaInformation(type: org.openapitools.generator.gradle.plugin.tasks.MetaTask) {
-	generatorName = "spring"
-	packageName = "anime.app"
-	outputFolder = "$buildDir/meta"
-}
-
-//Go thought every file and generate the data
-task generateYmlFiles(dependsOn: 'generateMetaInformation') {
-	for (Tuple2<String, String> data : [
-			new Tuple2<>("Models.yaml", "Models"),
-			new Tuple2<>("User-Service.yaml", "User"),
-			new Tuple2<>("Achievement-Service.yaml", "Achievement"),
-			new Tuple2<>("Anime-Service.yaml", "Anime"),
-			new Tuple2<>("Forum-Service.yaml", "Forum"),
-	]) {
-		generateClassesFromOpenApiSpecification(data.getV1(), data.getV2());
-	}
-}
-
-//Generate the data with the same generator and other configuration
-void generateClassesFromOpenApiSpecification(String ymlFileName, String taskName) {
-	String fullTaskName = "generate${taskName}"
-	tasks.register(fullTaskName, org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
-		//Generator information
-		generatorName = "spring"
-		library = "spring-boot"
-
-		//Spec Information
-		validateSpec = true
-		skipValidateSpec = false
-		inputSpec = "$projectDir/openapi/${ymlFileName}"
-		templateDir = "$projectDir/templates/java"
-
-		//Generation and Output information
-		outputDir = "$buildDir/generated"
-		apiPackage = "anime.app.api"
-		invokerPackage = "anime.app.openapi.invoker"
-		//Models must be in one package, because when they aren't cross-referencing them between different files generated many class files
-		modelPackage = "anime.app.dto"
-		configOptions = [
-				'performBeanValidation':'true',
-				'delegatePattern':'false',
-				'dateLibrary': 'java8-localdatetime',
-				'interfaceOnly': 'true',
-				'generateSupportingFiles': 'true'
-		]
-	}
-
-	compileJava.dependsOn(fullTaskName)
+    api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
+    api "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 }
 
 spotless {
-	java {
-		target "${buildDir}/generated/src/main/java"
-	}
+    java {
+        target "${buildDir}/generated/java/src/main/java"
+    }
 
-	typescript {
-		target "${buildDir}/generated/src/typescript"
-		toggleOffOn()
-		prettier(['prettier': '3.0.2'])
-				.config(['tabWidth': 4])
-	}
+    typescript {
+        target "${buildDir}/generated/typescript/apis", "${buildDir}/generated/typescript/models"
+    }
 }
 
-//Automatically add the generated prettified classes as SourceSet, so gradle recognises them
+allprojects {
+    javadoc {
+        source = sourceSets.main.allJava
+        classpath = configurations.compileClasspath
+    }
+}
+
+compileJava {
+    // Create the generator meta information
+    dependsOn 'generateMetaInformation'
+
+    // Create the files
+    dependsOn 'generateYmlFiles'
+
+    // Apply the prettier
+    dependsOn spotlessApply
+}
+
+tasks.register('generateMetaInformation', MetaTask) {
+    generatorName = "spring"
+    packageName = "anime.app"
+    outputFolder = "$buildDir/meta"
+}
+
+task generateYmlFiles(dependsOn: 'generateMetaInformation') {
+    for (Tuple2<String, String> data : [
+            // As models doesn't have any paths, there is no need to compile it
+            new Tuple2<>("User-Service.yaml", "User"),
+            new Tuple2<>("Achievement-Service.yaml", "Achievement"),
+            new Tuple2<>("Anime-Service.yaml", "Anime"),
+            new Tuple2<>("Forum-Service.yaml", "Forum"),
+    ]) {
+        generateClassesFromOpenApiSpecification(data.getV1(), data.getV2());
+    }
+}
+
+// Generate the data with the same generators and configurations
+// Additionally add dependencies between tasks to automatically run them
+void generateClassesFromOpenApiSpecification(String ymlFileName, String taskName) {
+    String javaFullTaskName = "generateJava${taskName}"
+    String typescriptFullTaskName = "generateTypescript${taskName}"
+
+    tasks.register(javaFullTaskName, GenerateTask) {
+        //Generator information
+        generatorName = "spring"
+        library = "spring-boot"
+
+        //Spec Information
+        validateSpec = true
+        skipValidateSpec = false
+        inputSpec = "$projectDir/openapi/${ymlFileName}"
+        templateDir = "$projectDir/templates/java"
+
+        //Generation and Output information
+        outputDir = "$buildDir/generated/java"
+        apiPackage = "anime.app.api"
+        invokerPackage = "anime.app.openapi.invoker"
+
+        // Models must be in one package, because when they aren't cross-referencing them between different files generated many class files
+        modelPackage = "anime.app.dto"
+        configOptions = [
+                'performBeanValidation':'true',
+                'delegatePattern':'false',
+                'dateLibrary': 'java8',
+                'interfaceOnly': 'true',
+                'generateSupportingFiles': 'true'
+        ]
+    }
+    spotlessApply.dependsOn(javaFullTaskName)
+    spotlessCheck.dependsOn(javaFullTaskName)
+    spotlessJava.dependsOn(javaFullTaskName)
+    spotlessTypescript.dependsOn(javaFullTaskName)
+
+    tasks.register(typescriptFullTaskName, GenerateTask) {
+        dependsOn(javaFullTaskName)
+        dependsOn(spotlessJava)
+
+        generatorName = "typescript-fetch"
+
+        validateSpec = true
+        skipValidateSpec = false
+        inputSpec = "$projectDir/openapi/${ymlFileName}"
+        templateDir = "$projectDir/templates/typescript"
+
+        outputDir = "$buildDir/generated/typescript"
+        apiPackage = "anime.app.api"
+        invokerPackage = "anime.app.openapi.invoker"
+        modelPackage = "anime.app.dto"
+        configOptions = [
+                'performBeanValidation':'true',
+                'delegatePattern':'false',
+                'dateLibrary': 'java8',
+                'interfaceOnly': 'true',
+                'generateSupportingFiles': 'true'
+        ]
+    }
+
+    spotlessApply.dependsOn(typescriptFullTaskName)
+    spotlessCheck.dependsOn(typescriptFullTaskName)
+    spotlessTypescript.dependsOn(typescriptFullTaskName)
+}
+
+// Automatically add the generated java prettified classes as SourceSet, so gradle recognises them
+// Typescript should not be added here as it will be used by Frontend
 sourceSets {
-	main {
-		java {
-			srcDirs = [
-					"src/main/java",
-					"${buildDir}/spotless/spotlessJava/build/generated/src/main/java"
-			]
-		}
-	}
+    main {
+        java {
+            srcDirs = [
+                    "src/main/java",
+                    "${buildDir}/generated/java/src/main/java"
+            ]
+        }
+    }
 }

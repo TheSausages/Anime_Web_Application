@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.0.0
 x-stoplight:
   id: zvdgj65zna2j5
 info:
@@ -7,15 +7,14 @@ info:
   contact:
     name: <Contact Person>
     url: https://opensource.org/license/mit/
-    email: <Contact Email>
+    email: x@gmail.com
   license:
+    url: http://localhost:3000
     name: MIT
-    identifier: https://opensource.org/license/mit/
-  termsOfService: <ToS URL>
+  termsOfService: http://localhost:3000
   description: 'Service for aquiring information on Anime. Uses Anilist API to aquire it, but holds some information (ex. User-Anime information like reviews) in a dedicated database.'
-  summary: Service for aquiring information on Anime
 servers:
-  - url: 'http://localhost:3000'
+  - url: http://localhost:3000
 paths:
   '/anime/{animeId}':
     parameters:
@@ -39,7 +38,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/DetailedAnimeDTO
+                $ref: ./Models.yaml#/components/schemas/DetailedAnimeDTO
               examples:
                 Successfull example:
                   value:
@@ -195,7 +194,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Validation Error:
                   value:
@@ -208,7 +207,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Anilist Error Example:
                   value:
@@ -227,14 +226,14 @@ paths:
     parameters:
       - schema:
           type: string
-          $ref: Models.yaml#/components/schemas/RankingType
+          $ref: ./Models.yaml#/components/schemas/RankingType
         name: rankingType
         in: path
         required: true
         description: Which ranking should be retrived
       - schema:
           type: integer
-          $ref: Models.yaml#/components/schemas/PageNumber
+          $ref: ./Models.yaml#/components/schemas/PageNumber
         name: pageNumber
         in: path
         required: true
@@ -249,7 +248,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/AnilistPageDTO
+                $ref: ./Models.yaml#/components/schemas/AnilistPageDTO
               examples:
                 Successfull Example:
                   value:
@@ -275,7 +274,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Validation Error:
                   value:
@@ -288,7 +287,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Anilist Error Example:
                   value:
@@ -304,7 +303,7 @@ paths:
     parameters:
       - schema:
           type: integer
-          $ref: Models.yaml#/components/schemas/PageNumber
+          $ref: ./Models.yaml#/components/schemas/PageNumber
         name: pageNumber
         in: path
         required: true
@@ -319,7 +318,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/AnilistPageDTO
+                $ref: ./Models.yaml#/components/schemas/AnilistPageDTO
               examples:
                 Successfull Example:
                   value:
@@ -345,7 +344,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Validation Error:
                   value:
@@ -358,7 +357,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Anilist Error Example:
                   value:
@@ -382,7 +381,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/LocalUserAnimeInformationDTO
+                $ref: ./Models.yaml#/components/schemas/LocalUserAnimeInformationDTO
               examples:
                 Successfull Example:
                   value:
@@ -410,7 +409,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Unauthenticated Error Example:
                   value:
@@ -423,7 +422,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Conflict Error Example:
                   value:
@@ -436,7 +435,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Unprocessable Entity Error Example:
                   value:
@@ -449,7 +448,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: Models.yaml#/components/schemas/ErrorDTO
+                $ref: ./Models.yaml#/components/schemas/ErrorDTO
               examples:
                 Validation Error:
                   value:
@@ -462,7 +461,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: Models.yaml#/components/schemas/LocalUserAnimeInformationDTO
+              $ref: ./Models.yaml#/components/schemas/LocalUserAnimeInformationDTO
             examples:
               Anime User Information Example:
                 value:

@@ -1,9 +1,15 @@
-dependencies {
-	implementation project(":Spring_Base")
+version = "0.0.1-SNAPSHOT"
 
-	testImplementation files(project(':Spring_Base').sourceSets.test.output.classesDirs)
+dependencies {
+    implementation project(":Spring_Base")
+
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springConfigurationAnnotationProcessorVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation files(project(':Spring_Base').sourceSets.test.output.classesDirs)
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

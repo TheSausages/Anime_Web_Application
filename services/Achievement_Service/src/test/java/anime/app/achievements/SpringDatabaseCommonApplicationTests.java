@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 
 class SpringDatabaseCommonApplicationTests extends DatabaseIntegrationTest {
 
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {}
 }
