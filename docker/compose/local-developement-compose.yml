@@ -1,0 +1,106 @@
+version: '3.9'
+
+services:
+  postgres_Anime:
+    image: postgres:15.4
+    container_name: Anime_Microservice_Database
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresAnimeMicroservice:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: anime
+      POSTGRES_USER: anime_microservice_user
+      POSTGRES_PASSWORD: anime_microservice_password
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d anime -U anime_microservice_user" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres_Forum:
+    image: postgres:15.4
+    container_name: Forum_Microservice_Database
+    restart: always
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgresForumMicroservice:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: forum
+      POSTGRES_USER: forum_microservice_user
+      POSTGRES_PASSWORD: forum_microservice_password
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d forum -U forum_microservice_user" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres_User:
+    image: postgres:15.4
+    container_name: User_Microservice_Database
+    restart: always
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgresUserMicroservice:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: user
+      POSTGRES_USER: user_microservice_user
+      POSTGRES_PASSWORD: user_microservice_password
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d user -U user_microservice_user" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres_Keycloak:
+    image: postgres:15.4
+    container_name: Keycloak_Database
+    restart: always
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgresKeycloak:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak_user
+      POSTGRES_PASSWORD: keycloak_password_1
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d keycloak -U keycloak_user" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    container_name: Keycloak_Server_Instance
+    depends_on:
+      postgres_Keycloak:
+        condition: service_healthy
+    ports:
+      - "8180:8080"
+    command: "start-dev --import-realm"
+    volumes:
+      - ../keycloak:/opt/keycloak/data/import
+    environment:
+      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-export.json
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres_Keycloak
+      DB_DATABASE: keycloak
+      DB_USER: keycloak_user
+      DB_PASSWORD: keycloak_password_1
+      #During first starting of the volumes, please use:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: Password1
+
+volumes:
+  postgresKeycloak:
+    driver: local
+  postgresAnimeMicroservice:
+    driver: local
+  postgresForumMicroservice:
+    driver: local
+  postgresUserMicroservice:
+    driver: local

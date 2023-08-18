@@ -20,30 +20,41 @@ subprojects { sub ->
     spotless {
         encoding 'UTF-8'
         enforceCheck true
+        ratchetFrom 'origin/main'
 
         java {
             googleJavaFormat('1.17.0')
+            target "**/*.java"
 
             importOrder()
             removeUnusedImports()
             formatAnnotations()
             toggleOffOn()
-            endWithNewline()
 
             // Versions 3.x.x throw na error, so downgrade is needed
             prettier(['prettier': '2.8.8', 'prettier-plugin-java': '2.2.0'])
-                    .config(['parser': 'java', 'tabWidth': 4])
+                .config(['parser': 'java', 'tabWidth': 4, 'editorconfig': true])
         }
 
         typescript {
             toggleOffOn()
-            target "${buildDir}/generated/src/typescript"
+            target "**/*.ts", "**/*.tsx"
 
             tsfmt('7.2.2')
                     .config(['indentSize': 4, 'convertTabsToSpaces': true])
             endWithNewline()
 
-            prettier('prettier': '2.8.8').config(['parser': 'java', 'tabWidth': 4])
+            prettier('prettier': '2.8.8')
+                .config(['editorconfig': true])
+        }
+
+        sql {
+            toggleOffOn()
+            target "**/*.sql"
+
+            // Prettier plugins not working, so dbeaver is used
+            dbeaver()
+                .configFile("${rootDir}/dbeaver.properties")
         }
 
         format 'misc', {
@@ -65,4 +76,12 @@ subprojects { sub ->
     processTestResources {
         dependsOn copyKeycloakRealm
     }
+
+    // Always check spotless before commit
+    tasks.register('installGitHooks', Copy) {
+        from new File(rootProject.rootDir, 'scripts/hooks')
+        into { new File(rootProject.rootDir, '.git/hooks') }
+    }
+
+    compileJava.dependsOn installGitHooks
 }
