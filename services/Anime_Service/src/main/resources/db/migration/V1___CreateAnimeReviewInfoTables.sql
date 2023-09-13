@@ -18,17 +18,22 @@ CREATE
                 TRIM( title )!= ''
             ),
             text VARCHAR(300) DEFAULT 'No text given',
-            nr_helpful INTEGER NOT NULL DEFAULT 0 CHECK(
-                nr_helpful >= 0
-            ),
-            nr_plus INTEGER NOT NULL DEFAULT 0 CHECK(
-                nr_plus >= 0
-            ),
-            nr_minus INTEGER NOT NULL DEFAULT 0 CHECK(
-                nr_minus >= 0
-            ),
             modification timestamptz NOT NULL DEFAULT NOW(),
             CONSTRAINT fk_review FOREIGN KEY(anime_id) REFERENCES anime.anime
+        );
+
+CREATE
+    TABLE
+        IF NOT EXISTS anime.Review_Opinions(
+            review_id UUID NOT NULL CONSTRAINT fk_review_review_opinions REFERENCES anime.Review(review_id),
+            user_id UUID NOT NULL,
+            CONSTRAINT pk_review_opinions PRIMARY KEY(
+                review_id,
+                user_id
+            ),
+            is_liked bool NOT NULL DEFAULT FALSE,
+            is_disliked bool NOT NULL DEFAULT FALSE,
+            is_reported bool NOT NULL DEFAULT FALSE
         );
 
 CREATE
@@ -43,8 +48,8 @@ CREATE
 CREATE
     TABLE
         IF NOT EXISTS anime.Anime_User_Info(
-            anime_id UUID NOT NULL UNIQUE CONSTRAINT fk_anime_anime_user_info REFERENCES anime.Anime(anime_id),
-            user_id UUID NOT NULL UNIQUE,
+            anime_id UUID NOT NULL CONSTRAINT fk_anime_anime_user_info REFERENCES anime.Anime(anime_id),
+            user_id UUID NOT NULL,
             CONSTRAINT pk_anime_user_info PRIMARY KEY(
                 anime_id,
                 user_id

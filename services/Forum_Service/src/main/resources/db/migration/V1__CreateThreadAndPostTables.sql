@@ -102,7 +102,8 @@ CREATE
                 user_id,
                 post_id
             ),
-            watching bool NOT NULL DEFAULT FALSE,
-            blocked bool NOT NULL DEFAULT FALSE,
+            is_liked bool NOT NULL DEFAULT FALSE,
+            is_disliked bool NOT NULL DEFAULT FALSE,
+            is_reported bool NOT NULL DEFAULT FALSE,
             CONSTRAINT fk_post_post_user_status FOREIGN KEY(post_id) REFERENCES forum.Post(post_id)
         );
