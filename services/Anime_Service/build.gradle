@@ -1,5 +1,9 @@
 version = "0.0.1-SNAPSHOT"
 
+jar {
+    archiveBaseName = 'Anime_Service'
+}
+
 dependencies {
     implementation project(":Spring_Database_Base")
 

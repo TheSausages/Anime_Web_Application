@@ -29,9 +29,8 @@ jobs:
 
             - name: Setup Gradle
               uses: gradle/gradle-build-action@v2
-
-            - name: Build The App
-              uses: ./gradlew :Anime_Service:build -x test
+              with:
+                  arguments: :Anime_Service:build -x test
 
     test:
         runs-on: ubuntu-latest
@@ -51,9 +50,8 @@ jobs:
 
             - name: Test the App
               uses: gradle/gradle-build-action@v2
-
-            - name: Build The App
-              uses: ./gradlew :Anime_Service:test --scan
+              with:
+                  arguments: :Anime_Service:test --scan
 
             - name: Save report if error
               if: ${{ failure() }}
