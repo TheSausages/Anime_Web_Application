@@ -1,6 +1,7 @@
 name: Anime Service
 
 on:
+    workflow_dispatch:
     push:
         paths:
             - "*.gradle"
@@ -36,7 +37,7 @@ jobs:
     test:
         runs-on: ubuntu-latest
         name: Tests
-        needs: Build
+        needs: build
 
         steps:
             - uses: actions/checkout@v3
