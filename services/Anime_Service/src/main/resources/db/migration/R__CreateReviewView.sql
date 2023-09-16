@@ -2,7 +2,7 @@ CREATE
     SCHEMA IF NOT EXISTS anime;
 
 CREATE
-    OR REPLACE VIEW anime.Review_View AS SELECT
+    OR REPLACE VIEW anime.review_view AS SELECT
         rv.review_id,
         rv.anime_id,
         rv.title,
@@ -22,7 +22,7 @@ CREATE
         rv.modification
     FROM
         anime.Review rv
-    INNER JOIN anime.Review_Opinions rvo ON
+    INNER JOIN anime.Review_Opinion rvo ON
         rv.review_id = rvo.review_id
     GROUP BY
         rv.review_id

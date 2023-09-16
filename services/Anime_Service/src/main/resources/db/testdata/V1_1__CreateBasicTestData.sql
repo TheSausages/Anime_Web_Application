@@ -41,7 +41,7 @@ INSERT
 
 INSERT
     INTO
-        anime.review_opinions
+        anime.review_opinion
     VALUES(
         '5b7152d0-2b5f-4a93-8b5b-5c63e4872312'::uuid,
         'eabc11d0-e6da-49f8-a6db-6bceb84a06bc'::uuid,

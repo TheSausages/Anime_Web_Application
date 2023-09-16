@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/anime
+    username: anime_microservice_user
+    password: anime_microservice_password
+  flyway:
+    locations: [ classpath:db/migration, classpath:db/testdata ]

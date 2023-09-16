@@ -2,16 +2,11 @@ server:
     port: 8082
 
 spring:
-    datasource:
-        url: jdbc:postgresql://localhost:5434/user
-        username: user_microservice_user
-        password: user_microservice_password
-    jpa:
-        hibernate:
-            ddl-auto: none
-            naming:
-                implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
-        properties:
-            hibernate:
-                dialect: org.hibernate.dialect.PostgreSQLDialect
-
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
