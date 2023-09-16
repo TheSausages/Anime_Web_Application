@@ -32,7 +32,6 @@ jobs:
               with:
                   arguments: :Anime_Service:build -x test
                   build-root-directory: .
-                  gradle-executable: ./gradlew
 
     test:
         runs-on: ubuntu-latest
@@ -55,7 +54,6 @@ jobs:
               with:
                   arguments: :Anime_Service:test --scan
                   build-root-directory: .
-                  gradle-executable: ./gradlew
 
             - name: Save report if error
               if: ${{ failure() }}
