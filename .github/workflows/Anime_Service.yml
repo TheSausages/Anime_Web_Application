@@ -27,11 +27,11 @@ jobs:
             - name: Make gradlew executable
               run: chmod +x ./gradlew
 
-            - name: Build the App
+            - name: Setup Gradle
               uses: gradle/gradle-build-action@v2
-              with:
-                  arguments: :Anime_Service:build -x test
-                  build-root-directory: .
+
+            - name: Build The App
+              uses: ./gradlew :Anime_Service:build -x test
 
     test:
         runs-on: ubuntu-latest
@@ -51,13 +51,13 @@ jobs:
 
             - name: Test the App
               uses: gradle/gradle-build-action@v2
-              with:
-                  arguments: :Anime_Service:test --scan
-                  build-root-directory: .
+
+            - name: Build The App
+              uses: ./gradlew :Anime_Service:test --scan
 
             - name: Save report if error
               if: ${{ failure() }}
               uses: actions/upload-artifact@v3
               with:
                   name: test-report
-                  path: .service/Anime_Service/build/reports/tests
+                  path: ./service/Anime_Service/build/reports/tests
