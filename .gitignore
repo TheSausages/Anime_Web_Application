@@ -21,6 +21,7 @@ services/**/src/test/**/realm/
 *.tar.gz
 *.rar
 
+# Left as it's used in github actions
 !/gradle/wrapper/gradle-wrapper.jar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
