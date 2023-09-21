@@ -1,3 +1,4 @@
+#TODO CHANGE TO 21
 FROM 8.3.0-jdk17 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src

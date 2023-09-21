@@ -14,7 +14,7 @@ subprojects { sub ->
     group = 'anime.app'
 
     java {
-        sourceCompatibility = '17'
+        sourceCompatibility = '21'
     }
 
     spotless {
