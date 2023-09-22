@@ -1,11 +1,11 @@
-name: Anime Service
+name: Forum Service
 
 on:
     workflow_dispatch:
     push:
         paths:
             - "*.gradle"
-            - "service/Anime_Service/**"
+            - "service/Forum_Service/**"
             - "service/common/**"
 
 permissions:
@@ -30,7 +30,7 @@ jobs:
             - name: Build the Service
               uses: gradle/gradle-build-action@v2
               with:
-                  arguments: :Anime_Service:build -x test
+                  arguments: :Forum_Service:build -x test
                   gradle-executable: ./gradlew
 
     test:
@@ -52,7 +52,7 @@ jobs:
             - name: Test the Service
               uses: gradle/gradle-build-action@v2
               with:
-                  arguments: :Anime_Service:test --scan
+                  arguments: :Forum_Service:test --scan
                   gradle-executable: ./gradlew
 
             - name: Save report if error

@@ -1,20 +1,21 @@
-package anime.app.anime.entity;
+package anime.app.forum.entity;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.io.Serializable;
+import java.util.UUID;
+
 @Data
 @Entity
-@Table(name = "review_opinion", schema = "anime")
-public class ReviewOpinion {
+@Table(name = "post_user_status", schema = "forum")
+public class PostUserStatus {
 
     @EmbeddedId
-    private ReviewOpinionId reviewOpinionId;
+    private PostUserStatusId postUserStatusId;
 
     @Column(name = "is_liked", nullable = false)
     @ColumnDefault("false")
@@ -32,13 +33,13 @@ public class ReviewOpinion {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ReviewOpinionId implements Serializable {
+    public static class PostUserStatusId implements Serializable {
 
         @Column(name = "user_id", nullable = false)
         private UUID userId;
 
         @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-        @JoinColumn(name = "review_id", nullable = false)
-        private Review review;
+        @JoinColumn(name = "post_id", nullable = false)
+        private Post post;
     }
 }

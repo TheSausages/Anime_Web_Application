@@ -23,6 +23,7 @@ public class AnimeUserInfo {
     private AnimeUserInfoId id;
 
     @Column(name = "status", nullable = false)
+    @ColumnDefault("NO_STATUS")
     @Enumerated(EnumType.STRING)
     private AnimeUserStatus status;
 
@@ -40,6 +41,7 @@ public class AnimeUserInfo {
     private int nrOfEpisodesSeen;
 
     @Column(name = "is_favourite", nullable = false)
+    @ColumnDefault("false")
     private boolean isFavourite;
 
     @Column(name = "grade")
@@ -55,7 +57,7 @@ public class AnimeUserInfo {
         orphanRemoval = true,
         fetch = FetchType.EAGER
     )
-    @JoinColumn(name = "review")
+    @JoinColumn(name = "review", unique = true)
     private Review review;
 
     @Embeddable
@@ -64,10 +66,11 @@ public class AnimeUserInfo {
     @AllArgsConstructor
     public static class AnimeUserInfoId implements Serializable {
 
+        @Column(name = "user_id", nullable = false)
         private UUID userId;
 
-        @ManyToOne
-        @JoinColumn(name = "anime_id")
+        @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+        @JoinColumn(name = "anime_id", nullable = false)
         private Anime anime;
     }
 

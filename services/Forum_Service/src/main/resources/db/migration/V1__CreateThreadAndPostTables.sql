@@ -17,87 +17,91 @@ CREATE
 
 CREATE
     TABLE
-        IF NOT EXISTS forum.Category(
+        IF NOT EXISTS forum.category(
             category_id UUID NOT NULL UNIQUE CONSTRAINT pk_category PRIMARY KEY,
-            name VARCHAR(45) NOT NULL UNIQUE,
+            name VARCHAR(45) NOT NULL UNIQUE CHECK(
+                TRIM( name )!= ''
+            ),
             description VARCHAR(150)
         );
 
 CREATE
     TABLE
-        IF NOT EXISTS forum.Tag(
+        IF NOT EXISTS forum.tag(
             tag_id UUID NOT NULL UNIQUE CONSTRAINT pk_tag PRIMARY KEY,
-            name VARCHAR(45) NOT NULL UNIQUE,
+            name VARCHAR(45) NOT NULL UNIQUE CHECK(
+                TRIM( name )!= ''
+            ),
             importance tag_importance NOT NULL,
             color VARCHAR(18)
         );
 
 CREATE
     TABLE
-        IF NOT EXISTS forum.Thread(
+        IF NOT EXISTS forum.thread(
             thread_id UUID NOT NULL UNIQUE CONSTRAINT pk_thread PRIMARY KEY,
-            title VARCHAR(80) NOT NULL UNIQUE,
-            text VARCHAR(600) NOT NULL UNIQUE,
+            title VARCHAR(80) NOT NULL UNIQUE CHECK(
+                TRIM( title )!= ''
+            ),
+            text VARCHAR(600) NOT NULL UNIQUE CHECK(
+                TRIM( text )!= ''
+            ),
             status thread_status NOT NULL DEFAULT 'CLOSED',
             creation timestamptz DEFAULT NOW(),
             modification timestamptz DEFAULT NOW(),
             category UUID NOT NULL,
             creator UUID NOT NULL,
-            CONSTRAINT fk_category_thread FOREIGN KEY(category) REFERENCES forum.Category(category_id)
+            CONSTRAINT fk_category_thread FOREIGN KEY(category) REFERENCES forum.category(category_id)
         );
 
 CREATE
     TABLE
-        IF NOT EXISTS forum.Thread_Tags(
+        IF NOT EXISTS forum.thread_tags(
             thread_id UUID NOT NULL UNIQUE,
             tag_id UUID NOT NULL UNIQUE,
             CONSTRAINT pk_thread_tags PRIMARY KEY(
                 thread_id,
                 tag_id
             ),
-            CONSTRAINT fk_thread_thread_tags FOREIGN KEY(thread_id) REFERENCES forum.Thread(thread_id),
-            CONSTRAINT fk_tag_thread_tags FOREIGN KEY(tag_id) REFERENCES forum.Tag(tag_id)
+            CONSTRAINT fk_thread_thread_tags FOREIGN KEY(thread_id) REFERENCES forum.thread(thread_id),
+            CONSTRAINT fk_tag_thread_tags FOREIGN KEY(tag_id) REFERENCES forum.tag(tag_id)
         );
 
 CREATE
     TABLE
-        IF NOT EXISTS forum.Thread_User_Status(
-            user_id UUID NOT NULL UNIQUE,
-            thread_id UUID NOT NULL UNIQUE,
+        IF NOT EXISTS forum.thread_user_status(
+            user_id UUID NOT NULL,
+            thread_id UUID NOT NULL,
             CONSTRAINT pk_thread_user_status PRIMARY KEY(
                 user_id,
                 thread_id
             ),
-            watching bool NOT NULL DEFAULT FALSE,
-            blocked bool NOT NULL DEFAULT FALSE,
-            CONSTRAINT fk_thread_thread_user_status FOREIGN KEY(thread_id) REFERENCES forum.Thread(thread_id)
+            is_watching bool NOT NULL DEFAULT FALSE,
+            is_blocked bool NOT NULL DEFAULT FALSE,
+            CONSTRAINT fk_thread_thread_user_status FOREIGN KEY(thread_id) REFERENCES forum.thread(thread_id)
         );
 
 CREATE
     TABLE
-        IF NOT EXISTS forum.Post(
+        IF NOT EXISTS forum.post(
             post_id UUID NOT NULL UNIQUE CONSTRAINT pk_post PRIMARY KEY,
             title VARCHAR(45) NOT NULL UNIQUE,
-            text VARCHAR(600) NOT NULL UNIQUE,
+            text VARCHAR(600) NOT NULL,
             is_blocked bool DEFAULT FALSE,
-            nr_upvote INTEGER DEFAULT 0 CHECK(
-                nr_upvote >= 0
-            ),
-            nr_downvote INTEGER DEFAULT 0 CHECK(
-                nr_downvote >= 0
-            ),
             creation timestamptz DEFAULT NOW(),
             modification timestamptz DEFAULT NOW(),
             thread UUID NOT NULL,
             creator UUID NOT NULL,
-            CONSTRAINT fk_thread_post FOREIGN KEY(thread) REFERENCES forum.Thread(thread_id)
+            answer_to UUID CHECK ( answer_to != post_id ),
+            CONSTRAINT fk_postresponses_response foreign key (answer_to) references forum.post(post_id),
+            CONSTRAINT fk_thread_post FOREIGN KEY(thread) REFERENCES forum.thread(thread_id)
         );
 
 CREATE
     TABLE
-        IF NOT EXISTS forum.Post_User_Status(
-            user_id UUID NOT NULL UNIQUE,
-            post_id UUID NOT NULL UNIQUE,
+        IF NOT EXISTS forum.post_user_status(
+            user_id UUID NOT NULL,
+            post_id UUID NOT NULL,
             CONSTRAINT pk_post_user_status PRIMARY KEY(
                 user_id,
                 post_id
@@ -105,5 +109,5 @@ CREATE
             is_liked bool NOT NULL DEFAULT FALSE,
             is_disliked bool NOT NULL DEFAULT FALSE,
             is_reported bool NOT NULL DEFAULT FALSE,
-            CONSTRAINT fk_post_post_user_status FOREIGN KEY(post_id) REFERENCES forum.Post(post_id)
+            CONSTRAINT fk_post_post_user_status FOREIGN KEY(post_id) REFERENCES forum.post(post_id)
         );

@@ -56,8 +56,8 @@ CREATE
                 user_id
             ),
             status status NOT NULL DEFAULT 'NO_STATUS',
-            watch_start_date DATE,
-            watch_end_date DATE,
+            watch_start_date DATE CHECK ( watch_start_date <= now() ),
+            watch_end_date DATE CHECK ( watch_start_date <= now() ),
             nr_episodes_seen INTEGER DEFAULT 0 NOT NULL,
             is_favourite BOOLEAN DEFAULT FALSE NOT NULL,
             grade INTEGER CHECK(

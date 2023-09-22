@@ -3,6 +3,7 @@ package anime.app.anime.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import java.time.Instant;
+import java.util.Set;
 import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
@@ -17,7 +18,7 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "review_id", nullable = false)
+    @Column(name = "review_id", nullable = false, unique = true)
     private UUID reviewId;
 
     @Column(name = "title", nullable = false)
@@ -39,7 +40,15 @@ public class Review {
     @Column(name = "modification")
     private Instant modification;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "anime_id")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "anime_id", nullable = false)
     private Anime anime;
+
+    @OneToMany(
+        mappedBy = "review_id",
+        fetch = FetchType.LAZY,
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private Set<ReviewOpinion> reviewOpinions;
 }

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/forum
+    url: jdbc:postgresql://localhost:5433/forum
     username: forum_microservice_user
     password: forum_microservice_password
   flyway:

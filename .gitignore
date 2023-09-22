@@ -2,6 +2,7 @@
 *.class
 
 services/**/src/test/**/realm/
+.gradle
 
 # Log file
 *.log
