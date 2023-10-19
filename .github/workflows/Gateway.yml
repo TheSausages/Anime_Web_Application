@@ -1,11 +1,11 @@
-name: Forum Service
+name: Gateway
 
 on:
     workflow_dispatch:
     push:
         paths:
             - "*.gradle"
-            - "service/Forum_Service/**"
+            - "service/Gateway/**"
             - "service/common/**"
 
 permissions:
@@ -30,7 +30,7 @@ jobs:
             - name: Build the Service
               uses: gradle/gradle-build-action@v2
               with:
-                  arguments: :Forum_Service:build -x test
+                  arguments: :Gateway:build -x test
                   gradle-executable: ./gradlew
 
     test:
@@ -52,7 +52,7 @@ jobs:
             - name: Test the Service
               uses: gradle/gradle-build-action@v2
               with:
-                  arguments: :Forum_Service:test --scan
+                  arguments: :Gateway:test --scan
                   gradle-executable: ./gradlew
 
             - name: Save report if error
@@ -60,4 +60,4 @@ jobs:
               uses: actions/upload-artifact@v3
               with:
                   name: test-report
-                  path: ./service/Forum_Service/build/reports/tests
+                  path: ./service/Gateway/build/reports/tests

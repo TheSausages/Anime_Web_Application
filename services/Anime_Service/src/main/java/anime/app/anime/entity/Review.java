@@ -45,7 +45,7 @@ public class Review {
     private Anime anime;
 
     @OneToMany(
-        mappedBy = "review_id",
+        mappedBy = "reviewOpinionId.review",
         fetch = FetchType.LAZY,
         cascade = CascadeType.ALL,
         orphanRemoval = true

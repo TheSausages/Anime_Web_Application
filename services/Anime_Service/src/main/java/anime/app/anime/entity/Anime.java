@@ -26,7 +26,7 @@ public class Anime {
     private Integer averageEpisodeLength;
 
     @OneToMany(
-        mappedBy = "anime_id",
+        mappedBy = "id.anime",
         cascade = CascadeType.ALL,
         orphanRemoval = true,
         fetch = FetchType.LAZY
@@ -34,7 +34,7 @@ public class Anime {
     private Set<AnimeUserInfo> animeUserInfos;
 
     @OneToMany(
-        mappedBy = "anime_id",
+        mappedBy = "anime",
         cascade = CascadeType.ALL,
         orphanRemoval = true,
         fetch = FetchType.LAZY

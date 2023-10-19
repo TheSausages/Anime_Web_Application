@@ -2,22 +2,22 @@ CREATE
     SCHEMA IF NOT EXISTS users;
 
 CREATE
-    TYPE languages AS ENUM(
+    TYPE supported_languages AS ENUM(
         'ENGLISH',
         'POLISH'
     );
 
 CREATE
-    TYPE mode AS ENUM(
+    TYPE color_mode AS ENUM(
         'LIGHT',
         'DARK'
     );
 
 CREATE
     TABLE
-        IF NOT EXISTS users.User(
+        IF NOT EXISTS users.user(
             user_id UUID NOT NULL UNIQUE CONSTRAINT pk_user PRIMARY KEY,
             username VARCHAR(45) NOT NULL UNIQUE,
-            preferred_language languages NOT NULL DEFAULT 'ENGLISH',
-            mode mode NOT NULL DEFAULT 'DARK'
+            preferred_language supported_languages NOT NULL DEFAULT 'ENGLISH',
+            preferred_color_mode color_mode NOT NULL DEFAULT 'DARK'
         );
