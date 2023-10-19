@@ -57,8 +57,8 @@ CREATE
 CREATE
     TABLE
         IF NOT EXISTS forum.thread_tags(
-            thread_id UUID NOT NULL UNIQUE,
-            tag_id UUID NOT NULL UNIQUE,
+            thread_id UUID NOT NULL,
+            tag_id UUID NOT NULL,
             CONSTRAINT pk_thread_tags PRIMARY KEY(
                 thread_id,
                 tag_id
@@ -92,8 +92,10 @@ CREATE
             modification timestamptz DEFAULT NOW(),
             thread UUID NOT NULL,
             creator UUID NOT NULL,
-            answer_to UUID CHECK ( answer_to != post_id ),
-            CONSTRAINT fk_postresponses_response foreign key (answer_to) references forum.post(post_id),
+            answer_to UUID CHECK(
+                answer_to != post_id
+            ),
+            CONSTRAINT fk_postresponses_response FOREIGN KEY(answer_to) REFERENCES forum.post(post_id),
             CONSTRAINT fk_thread_post FOREIGN KEY(thread) REFERENCES forum.thread(thread_id)
         );
 

@@ -1,0 +1,15 @@
+INSERT
+    INTO
+        users.user
+    VALUES(
+        'eabc11d0-e6da-49f8-a6db-6bceb84a06bc'::uuid,
+        'SecondForumUser',
+        'ENGLISH',
+        'DARK'
+    ),
+    (
+        '467a809a-d893-48c2-85e2-82f9ce4b1560'::uuid,
+        'Username',
+        'POLISH',
+        'LIGHT'
+    );
