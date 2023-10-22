@@ -1,5 +1,5 @@
 plugins {
-    id "com.diffplug.spotless" version "6.20.0"
+    id "com.diffplug.spotless" version "6.22.0"
 }
 
 subprojects { sub ->
@@ -20,11 +20,14 @@ subprojects { sub ->
     spotless {
         encoding 'UTF-8'
         enforceCheck true
-        ratchetFrom 'origin/main'
+
+        // Ratchet is disabled as it disallows spotless to target
+        // generated files in git ignored files (ex. openapi generated files)
+
+        // ratchetFrom 'origin/main'
 
         java {
             googleJavaFormat('1.17.0')
-            target "**/*.java"
 
             importOrder()
             removeUnusedImports()
@@ -37,14 +40,11 @@ subprojects { sub ->
         }
 
         typescript {
-            toggleOffOn()
-            target "**/*.ts", "**/*.tsx"
-
-            tsfmt('7.2.2')
-                    .config(['indentSize': 4, 'convertTabsToSpaces': true])
+            target "$buildDir/generated/typescript/**/*.ts"
             endWithNewline()
 
-            prettier('prettier': '2.8.8')
+            toggleOffOn()
+            prettier(['prettier': '2.8.8'])
                 .config(['editorconfig': true])
         }
 

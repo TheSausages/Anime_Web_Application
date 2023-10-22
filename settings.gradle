@@ -15,7 +15,8 @@ rootProject.name = 'Anime_Web_App'
 		'Anime_Service': './services/',
 		'Forum_Service': './services/',
 		'Gateway': './services/',
-		'User_Service': './services/'
+		'User_Service': './services/',
+        'Frontend': './services/'
 ].each { service ->
 	include service.key
 	project(":${service.key}").projectDir = new File(settingsDir, service.value + service.key)

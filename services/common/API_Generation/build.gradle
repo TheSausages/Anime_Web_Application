@@ -33,16 +33,6 @@ dependencies {
     api "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 }
 
-//spotless {
-//    java {
-//        target "${buildDir}/generated/java/src/main/java/**/*"
-//    }
-//
-//    typescript {
-//        target "${buildDir}/generated/typescript/**/*"
-//    }
-//}
-
 allprojects {
     javadoc {
         source = sourceSets.main.allJava
@@ -114,6 +104,7 @@ void generateClassesFromOpenApiSpecification(String ymlFileName, String taskName
     spotlessApply.dependsOn(javaFullTaskName)
     spotlessCheck.dependsOn(javaFullTaskName)
     spotlessJava.dependsOn(javaFullTaskName)
+    spotlessJavaCheck.dependsOn(spotlessJavaApply)
     spotlessTypescript.dependsOn(javaFullTaskName)
 
     tasks.register(typescriptFullTaskName, GenerateTask) {
@@ -143,6 +134,8 @@ void generateClassesFromOpenApiSpecification(String ymlFileName, String taskName
     spotlessApply.dependsOn(typescriptFullTaskName)
     spotlessCheck.dependsOn(typescriptFullTaskName)
     spotlessTypescript.dependsOn(typescriptFullTaskName)
+
+//    spotlessCheck.mustRunAfter(spotlessApply)
 }
 
 // Automatically add the generated java prettified classes as SourceSet, so gradle recognises them

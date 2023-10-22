@@ -1,0 +1,45 @@
+plugins {
+    id "com.github.node-gradle.node" version "7.0.1"
+}
+
+version = "0.0.1-SNAPSHOT"
+
+task copyGeneratedFrontendCode(type: Copy) {
+    mustRunAfter(":API_Generation:compileJava")
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from "${rootDir}/services/common/API_Generation/build/generated/typescript"
+    into "${projectDir}/src/generated"
+}
+
+task formatFrontendCode(type: NpxTask) {
+    dependsOn npmInstall
+    dependsOn copyGeneratedFrontendCode
+
+    command = 'npm'
+    args = ['run', 'format']
+}
+
+task buildFrontend(type: NpxTask) {
+    dependsOn formatFrontendCode
+
+    command = 'npm'
+    args = ['run', 'build']
+
+    inputs.files('package.json', 'package-lock.json', 'index.html', 'tsconfig.json', 'tsconfig.node.json', 'vite.config.ts')
+    inputs.dir('src')
+    inputs.dir('public')
+    inputs.dir(fileTree("node_modules").exclude(".cache"))
+    outputs.dir('dist')
+}
+
+task runLocally(type: NpxTask) {
+    dependsOn formatFrontendCode
+
+    command = 'npm'
+    args = ['run', 'dev']
+}
+
+node {
+    download = false
+}
