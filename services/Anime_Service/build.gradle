@@ -5,7 +5,7 @@ jar {
 }
 
 dependencies {
-    implementation project(":Spring_Database_Base")
+    implementation project(path: ':Spring_Database_Base')
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springConfigurationAnnotationProcessorVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"

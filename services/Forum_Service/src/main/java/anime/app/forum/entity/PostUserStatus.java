@@ -1,13 +1,12 @@
 package anime.app.forum.entity;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-
-import java.io.Serializable;
-import java.util.UUID;
 
 @Data
 @Entity

@@ -38,7 +38,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/DetailedAnimeDTO
+                $ref: './Models.yaml#/components/schemas/DetailedAnimeDTO'
               examples:
                 Successfull example:
                   value:
@@ -194,7 +194,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/ErrorDTO
+                $ref: './Models.yaml#/components/schemas/ErrorDTO'
               examples:
                 Validation Error:
                   value:
@@ -207,7 +207,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/ErrorDTO
+                $ref: './Models.yaml#/components/schemas/ErrorDTO'
               examples:
                 Anilist Error Example:
                   value:
@@ -226,14 +226,14 @@ paths:
     parameters:
       - schema:
           type: string
-          $ref: ./Models.yaml#/components/schemas/RankingType
+          $ref: './Models.yaml#/components/schemas/RankingType'
         name: rankingType
         in: path
         required: true
         description: Which ranking should be retrived
       - schema:
           type: integer
-          $ref: ./Models.yaml#/components/schemas/PageNumber
+          $ref: './Models.yaml#/components/schemas/PageNumber'
         name: pageNumber
         in: path
         required: true
@@ -248,7 +248,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/AnilistPageDTO
+                $ref: './Models.yaml#/components/schemas/AnilistPageDTO'
               examples:
                 Successfull Example:
                   value:
@@ -274,7 +274,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/ErrorDTO
+                $ref: './Models.yaml#/components/schemas/ErrorDTO'
               examples:
                 Validation Error:
                   value:
@@ -287,7 +287,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/ErrorDTO
+                $ref: './Models.yaml#/components/schemas/ErrorDTO'
               examples:
                 Anilist Error Example:
                   value:
@@ -303,7 +303,7 @@ paths:
     parameters:
       - schema:
           type: integer
-          $ref: ./Models.yaml#/components/schemas/PageNumber
+          $ref: './Models.yaml#/components/schemas/PageNumber'
         name: pageNumber
         in: path
         required: true
@@ -318,7 +318,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/AnilistPageDTO
+                $ref: './Models.yaml#/components/schemas/AnilistPageDTO'
               examples:
                 Successfull Example:
                   value:
@@ -344,7 +344,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/ErrorDTO
+                $ref: './Models.yaml#/components/schemas/ErrorDTO'
               examples:
                 Validation Error:
                   value:
@@ -357,7 +357,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/ErrorDTO
+                $ref: './Models.yaml#/components/schemas/ErrorDTO'
               examples:
                 Anilist Error Example:
                   value:
@@ -371,6 +371,69 @@ paths:
       description: Get a page of Anime that meet the conditons in the query.
       security:
         - Keycloak_JWT: []
+      parameters:
+        -   schema:
+                type: string
+            in: query
+            name: title
+            description: Phrase that should be in the Anime title
+        -   schema:
+                type: string
+                format: date
+            in: query
+            name: maxStartDate
+            description: Maximum date of airing of the Anime
+        -   schema:
+                type: string
+                format: date
+            in: query
+            name: minStartDate
+            description: Minimum date of airing of the Anime
+        -   schema:
+                type: string
+                format: date
+            in: query
+            name: maxEndDate
+            description: Maximum date of finishing of the Anime
+        -   schema:
+                type: string
+                format: date
+            in: query
+            description: Minimum date of finishing of the Anime
+            name: minEndDate
+        -   schema:
+                type: integer
+                minimum: 0
+            in: query
+            name: maxNumberOfEpisodes
+            description: Maximum number of episodes of the Anime
+        -   schema:
+                type: integer
+                minimum: 0
+            in: query
+            name: minNumberOfEpisodes
+            description: Minimum number of episodes of the Anime
+        -   schema:
+                type: integer
+                minimum: 0
+                maximum: 100
+            in: query
+            name: maxAverageScore
+            description: Maximum average score in Anilist Service
+        -   schema:
+                type: integer
+                minimum: 0
+                maximum: 100
+            in: query
+            name: minAverageScore
+            description: Mininum average score in Anilist Service
+        -   schema:
+                type: integer
+                minimum: 1900
+                example: 1901
+            in: query
+            name: seasonYear
+            description: What year did the anime air
   /anime/userInformation:
     put:
       summary: Update user-anime information
@@ -381,7 +444,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/LocalUserAnimeInformationDTO
+                $ref: './Models.yaml#/components/schemas/LocalUserAnimeInformationDTO'
               examples:
                 Successfull Example:
                   value:
@@ -409,7 +472,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/ErrorDTO
+                $ref: './Models.yaml#/components/schemas/ErrorDTO'
               examples:
                 Unauthenticated Error Example:
                   value:
@@ -422,7 +485,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/ErrorDTO
+                $ref: './Models.yaml#/components/schemas/ErrorDTO'
               examples:
                 Conflict Error Example:
                   value:
@@ -435,7 +498,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/ErrorDTO
+                $ref: './Models.yaml#/components/schemas/ErrorDTO'
               examples:
                 Unprocessable Entity Error Example:
                   value:
@@ -448,7 +511,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ./Models.yaml#/components/schemas/ErrorDTO
+                $ref: './Models.yaml#/components/schemas/ErrorDTO'
               examples:
                 Validation Error:
                   value:
@@ -461,7 +524,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ./Models.yaml#/components/schemas/LocalUserAnimeInformationDTO
+              $ref: './Models.yaml#/components/schemas/LocalUserAnimeInformationDTO'
             examples:
               Anime User Information Example:
                 value:
@@ -498,7 +561,26 @@ components:
     Keycloak_JWT:
       type: http
       scheme: bearer
-      description: 'Authentification used by all microservices, aquired from a Keycloak Service'
+      description: 'Authentication used by all microservices, aquired from a Keycloak Service'
+  parameters:
+      season:
+          schema:
+              $ref: './Models.yaml#/components/schemas/AnilistMediaSeason'
+          in: query
+          name: season
+          description: What season did the Anime air
+      status:
+          schema:
+              $ref: './Models.yaml#/components/schemas/AnilistMediaStatus'
+          in: query
+          name: status
+          description: What is the Anilist status of the Anime
+      format:
+          schema:
+              $ref: './Models.yaml#/components/schemas/AnilistMediaFormat'
+          in: query
+          name: format
+          description: What was the format of the Anime
 security:
   - Keycloak_JWT: []
 tags:

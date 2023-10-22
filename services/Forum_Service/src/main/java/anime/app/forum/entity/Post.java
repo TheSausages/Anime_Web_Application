@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
-
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -55,9 +54,8 @@ public class Post {
     private UUID creator;
 
     /**
-     * This field is used for mapping post responses.
-     * It is a copy of the parent object. As such no setter/getter
-     * is accessible.
+     * This field is used for mapping post responses. It is a copy of the parent object. As such no
+     * setter/getter is accessible.
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "answer_to")

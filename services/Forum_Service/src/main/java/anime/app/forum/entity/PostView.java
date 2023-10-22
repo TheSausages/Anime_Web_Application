@@ -2,14 +2,13 @@ package anime.app.forum.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import java.time.Instant;
+import java.util.UUID;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
-
-import java.time.Instant;
-import java.util.UUID;
 
 @Data
 @Entity

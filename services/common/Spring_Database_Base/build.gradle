@@ -2,7 +2,7 @@ version = "0.0.1-SNAPSHOT"
 
 dependencies {
     // Apis
-    api project(":Spring_Base")
+    api project(path: ':Spring_Base')
     api "org.springframework.boot:spring-boot-starter-data-jpa:${springVersion}"
     api "org.springframework.boot:spring-boot-starter-data-rest:${springVersion}"
     api "org.flywaydb:flyway-core:${flywayVersion}"

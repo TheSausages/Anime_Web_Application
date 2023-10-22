@@ -12,7 +12,7 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
 
-    // These deppendencies are used in the generated classes
+    // These dependencies are used in the generated classes
     // As they are needed in other services, they are apis
     api "org.springframework.boot:spring-boot-starter-web:${springVersion}"
     api "org.springframework.boot:spring-boot-starter-validation:${springVersion}"
@@ -33,15 +33,15 @@ dependencies {
     api "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 }
 
-spotless {
-    java {
-        target "${buildDir}/generated/java/src/main/java"
-    }
-
-    typescript {
-        target "${buildDir}/generated/typescript/apis", "${buildDir}/generated/typescript/models"
-    }
-}
+//spotless {
+//    java {
+//        target "${buildDir}/generated/java/src/main/java/**/*"
+//    }
+//
+//    typescript {
+//        target "${buildDir}/generated/typescript/**/*"
+//    }
+//}
 
 allprojects {
     javadoc {
@@ -149,11 +149,6 @@ void generateClassesFromOpenApiSpecification(String ymlFileName, String taskName
 // Typescript should not be added here as it will be used by Frontend
 sourceSets {
     main {
-        java {
-            srcDirs = [
-                    "src/main/java",
-                    "${buildDir}/generated/java/src/main/java"
-            ]
-        }
+        java.srcDirs += "${buildDir}/generated/java/src/main/java"
     }
 }

@@ -28,7 +28,7 @@ allprojects {
 
 dependencies {
     // Apis
-    implementation project(":API_Generation")
+    api project(path: ':API_Generation')
     api "org.springframework.boot:spring-boot-starter-web:${springVersion}"
     api "org.springframework.boot:spring-boot-starter-actuator:${springVersion}"
     api "org.springframework.boot:spring-boot-starter-validation:${springVersion}"
