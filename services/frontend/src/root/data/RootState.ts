@@ -1,5 +1,5 @@
-import { UserState } from "@/user/data/UserState.ts";
+import { CommonState } from "@/common/data/CommonState.ts";
 
 export interface RootState {
-    user: UserState;
+    common: CommonState;
 }

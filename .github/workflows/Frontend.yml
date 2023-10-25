@@ -1,0 +1,50 @@
+name: Frontend
+
+on:
+    workflow_dispatch:
+    push:
+        paths:
+            - "*.gradle"
+            - "service/Frontend/**"
+            - "service/common/API_Generation/**"
+
+permissions:
+    contents: read
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        name: Build
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Set up node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '18.17.1'
+
+            - name: Make gradlew executable
+              run: chmod +x ./gradlew
+
+            - name: Build Frontend
+              run: ./gradlew :Frontend:buildFrontend
+
+    test:
+        runs-on: ubuntu-latest
+        name: Tests
+        needs: build
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Set up node
+              uses: actions/setup-node@v3
+              with:
+                node-version: '18.17.1'
+
+            - name: Make gradlew executable
+              run: chmod +x ./gradlew
+
+            - name: Test Frontend
+              run: ./gradlew :Frontend:runFrontendTests

@@ -131,8 +131,9 @@ void generateClassesFromOpenApiSpecification(String ymlFileName, String taskName
     spotlessApply.dependsOn(typescriptFullTaskName)
     spotlessCheck.dependsOn(typescriptFullTaskName)
     spotlessTypescript.dependsOn(typescriptFullTaskName)
-
-//    spotlessCheck.mustRunAfter(spotlessApply)
+//    project(":Frontend")
+//            .getTasksByName("copyGeneratedFrontendCode", false)
+//            .dependsOn.add(getTasksByName(typescriptFullTaskName))
 }
 
 // Automatically add the generated java prettified classes as SourceSet, so gradle recognises them

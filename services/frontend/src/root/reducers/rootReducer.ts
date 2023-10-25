@@ -1,10 +1,10 @@
+import { Language, LightMode } from "@/common/data/Settings.ts";
+import commonReducer from "@/common/reducers/commonReducer.ts";
 import { RootState } from "@/root/data/RootState.ts";
-import { Language, LightMode } from "@/user/data/Settings.ts";
-import userReducer from "@/user/reducers/userReducer.ts";
 import { combineReducers } from "@reduxjs/toolkit";
 
 export const defaultState = {
-    user: {
+    common: {
         light_mode: LightMode.LIGHT,
         language: Language.ENGLISH,
     },
@@ -12,5 +12,5 @@ export const defaultState = {
 } as RootState;
 
 export default combineReducers({
-    user: userReducer,
+    common: commonReducer,
 });

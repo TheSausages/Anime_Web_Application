@@ -1,4 +1,5 @@
-import { createTheme, Theme } from "@mui/material/styles";
+import { darkTheme, lightTheme } from "@/common/data/themes.ts";
+import { Theme } from "@mui/material/styles";
 
 export enum Language {
     POLISH = "POLISH",
@@ -11,18 +12,6 @@ export enum LightMode {
     // For now light
     COLOR_BLIND = "COLOR_BLIND",
 }
-
-const darkTheme = createTheme({
-    palette: {
-        mode: "dark",
-    },
-});
-
-const lightTheme = createTheme({
-    palette: {
-        mode: "light",
-    },
-});
 
 export const getThemeForLightMode = (mode: LightMode): Theme => {
     switch (mode) {

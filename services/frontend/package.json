@@ -10,7 +10,8 @@
         "preview": "vite preview",
         "format": "prettier --write ./ --ignore-path=.prettierignore",
         "test": "vitest run",
-        "preinstall": "npx force-resolutions"
+        "@comment": "This is needed as otherwise typescript breaks, check every so often if can be deleted",
+        "postinstall": "npm install @mui/material @emotion/react @emotion/styled --legacy-peer-deps @mui/icons-material"
     },
     "dependencies": {
         "@emotion/react": "^11.11.1",
@@ -20,14 +21,15 @@
         "@mui/icons-material": "^5.14.15",
         "@mui/material": "^5.14.15",
         "@reduxjs/toolkit": "1.9.7",
+        "normalize.css": "^8.0.1",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-redux": "8.1.3"
     },
     "devDependencies": {
+        "@testing-library/dom": "9.3.3",
         "@testing-library/react": "13.0.0",
         "@testing-library/user-event": "14.5.1",
-        "@testing-library/vue": "7.0.0",
         "@types/core-js": "2.5.7",
         "@types/react": "17.0.43",
         "@types/react-dom": "18.2.14",
@@ -51,9 +53,5 @@
         "plugins": [
             "prettier-plugin-organize-imports"
         ]
-    },
-    "@comment": {
-        "@1": "@types/react broke it all",
-        "@2": "Check every so often is changing to latest versions of packages works"
     }
 }

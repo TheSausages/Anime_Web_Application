@@ -1,11 +1,7 @@
+import AppBar from "@/common/components/appBar/AppBar.tsx";
+import { getThemeSelector } from "@/common/selectors/commonSelectors.ts";
 import { CompletePostPageDTO } from "@/generated";
 import { RootState } from "@/root/data/RootState.ts";
-import LightModeSelector from "@/user/components/LightModeSelector.tsx";
-import { getThemeSelector } from "@/user/selectors/userSelectors.ts";
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
 import { ThemeProvider } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import { connect } from "react-redux";
@@ -28,8 +24,11 @@ function App(props: MainAppProps) {
 
     return (
         <ThemeProvider theme={props.light_mode}>
-            <LightModeSelector />
+            <AppBar />
             <p>{JSON.stringify(a)}</p>
+            {[...Array(50).keys()].map((value) => (
+                <p key={value}>{value}</p>
+            ))}
         </ThemeProvider>
     );
 }

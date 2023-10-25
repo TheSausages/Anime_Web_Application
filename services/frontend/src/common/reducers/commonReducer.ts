@@ -1,18 +1,18 @@
+import { CommonActionType } from "@/common/actions/commonActions.ts";
+import { CommonState } from "@/common/data/CommonState.ts";
 import { ActionInterface } from "@/root/actions/rootAction.ts";
 import { defaultState } from "@/root/reducers/rootReducer.ts";
-import { UserActionType } from "@/user/actions/userActions.ts";
-import { UserState } from "@/user/data/UserState.ts";
 
-export default function userReducer(
-    state: UserState = defaultState.user,
+export default function commonReducer(
+    state: CommonState = defaultState.common,
     action: ActionInterface,
 ) {
     switch (action.type) {
-        case UserActionType.CHANGE_LIGHT_MODE: {
+        case CommonActionType.CHANGE_LIGHT_MODE: {
             return {
                 ...state,
                 light_mode: action.payload,
-            } as UserState;
+            } as CommonState;
         }
 
         default:
