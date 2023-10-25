@@ -2475,13 +2475,13 @@ components:
             id: z2vy99phaffr1
           enum:
             - DARK
-            - LIGTH
+            - LIGHT
             - COLOR_BLIND
-          default: LIGTH
+          default: LIGHT
       examples:
         - userId: 497f6eca-6276-4993-bfeb-53cbbbba6f08
           language: ENGLISH
-          mode: LIGTH
+          mode: LIGHT
     RankingType:
       title: RankingType
       x-stoplight:

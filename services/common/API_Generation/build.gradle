@@ -123,11 +123,8 @@ void generateClassesFromOpenApiSpecification(String ymlFileName, String taskName
         invokerPackage = "anime.app.openapi.invoker"
         modelPackage = "anime.app.dto"
         configOptions = [
-                'performBeanValidation':'true',
-                'delegatePattern':'false',
-                'dateLibrary': 'java8',
-                'interfaceOnly': 'true',
-                'generateSupportingFiles': 'true'
+            'supportsES6': 'true',
+            'withInterfaces': 'true'
         ]
     }
 

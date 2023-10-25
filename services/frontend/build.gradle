@@ -8,7 +8,7 @@ task copyGeneratedFrontendCode(type: Copy) {
     mustRunAfter(":API_Generation:compileJava")
 
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    from "${rootDir}/services/common/API_Generation/build/generated/typescript"
+    from "${rootDir}/services/common/API_Generation/build/generated/typescript/models"
     into "${projectDir}/src/generated"
 }
 
@@ -31,6 +31,13 @@ task buildFrontend(type: NpxTask) {
     inputs.dir('public')
     inputs.dir(fileTree("node_modules").exclude(".cache"))
     outputs.dir('dist')
+}
+
+task runTests(type: NpxTask) {
+    dependsOn formatFrontendCode
+
+    command = 'npm'
+    args = ['run', 'test', '']
 }
 
 task runLocally(type: NpxTask) {
