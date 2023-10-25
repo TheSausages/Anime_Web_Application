@@ -17,8 +17,6 @@ jobs:
         name: Build
 
         steps:
-            - uses: actions/checkout@v3
-
             - name: Set up JDK 21 for
               uses: actions/setup-java@v3
               with:
@@ -30,11 +28,23 @@ jobs:
               with:
                   node-version: '18.17.1'
 
+            - uses: actions/checkout@v3
+
             - name: Make gradlew executable
               run: chmod +x ./gradlew
 
-            - name: Build Frontend
-              run: ./gradlew :Frontend:buildFrontend --stacktrace
+            - name: See all tasks
+              run: ./gradlew tasks --all
+
+
+            -   name: See Frotnend dependencies
+                run: ./gradlew :Frontend:buildEnvironment --stacktrace
+
+            -   name: Build the Service
+                uses: gradle/gradle-build-action@v2
+                with:
+                    arguments: :Frontend:build -x test --stacktrace
+                    gradle-executable: ./gradlew
 
     test:
         runs-on: ubuntu-latest
@@ -59,4 +69,4 @@ jobs:
               run: chmod +x ./gradlew
 
             - name: Test Frontend
-              run: ./gradlew :Frontend:runFrontendTests
+              run: ./gradlew :Frontend:test

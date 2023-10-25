@@ -33,107 +33,94 @@ dependencies {
     api "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 }
 
-allprojects {
-    javadoc {
-        source = sourceSets.main.allJava
-        classpath = configurations.compileClasspath
-    }
+tasks.register("generateTypescriptMetaInformation", MetaTask) {
+    generatorName = "typescript-fetch"
+    packageName = "anime.app"
+    outputFolder = "${getLayout().getBuildDirectory().get()}/meta/typescript"
 }
 
-compileJava {
-    // Create the generator meta information
-    dependsOn 'generateMetaInformation'
-
-    // Create the files
-    dependsOn 'generateYmlFiles'
-
-    // Apply the prettier
-    dependsOn spotlessApply
-}
-
-tasks.register('generateMetaInformation', MetaTask) {
+tasks.register("generateJavaSpringMetaInformation", MetaTask) {
     generatorName = "spring"
     packageName = "anime.app"
-    outputFolder = "$buildDir/meta"
+    outputFolder = "${getLayout().getBuildDirectory().get()}/meta/java"
 }
 
-task generateYmlFiles(dependsOn: 'generateMetaInformation') {
-    for (Tuple2<String, String> data : [
-            // As models doesn't have any paths, there is no need to compile it
-            new Tuple2<>("User-Service.yaml", "User"),
-            new Tuple2<>("Achievement-Service.yaml", "Achievement"),
-            new Tuple2<>("Anime-Service.yaml", "Anime"),
-            new Tuple2<>("Forum-Service.yaml", "Forum"),
-    ]) {
-        generateClassesFromOpenApiSpecification(data.getV1(), data.getV2());
+def yamlFileToGenerate = [
+    // As models doesn't have any paths, there is no need to compile it
+    User: "User-Service.yaml",
+    Achievement: "Achievement-Service.yaml",
+    Anime: "Anime-Service.yaml",
+    Forum: "Forum-Service.yaml"
+]
+task generateTypescriptCode() {
+    yamlFileToGenerate.each { yaml ->
+        String typescriptFullTaskName = "generateTypescriptCode-${yaml.getKey()}"
+
+        tasks.register(typescriptFullTaskName, GenerateTask) {
+            generatorName = "typescript-fetch"
+
+            validateSpec = true
+            skipValidateSpec = false
+            inputSpec = "${getLayout().getProjectDirectory()}/openapi/${yaml.getValue()}"
+            templateDir = "${getLayout().getProjectDirectory()}/templates/typescript"
+
+            outputDir = "${getLayout().getBuildDirectory().get()}/generated/typescript"
+            apiPackage = "anime.app.api"
+            invokerPackage = "anime.app.openapi.invoker"
+            modelPackage = "anime.app.dto"
+            configOptions = [
+                'supportsES6': 'true',
+                'withInterfaces': 'true'
+            ]
+        }
+
+        spotlessTypescript.dependsOn(typescriptFullTaskName)
+        spotlessTypescriptApply.dependsOn(typescriptFullTaskName)
+        spotlessTypescriptCheck.dependsOn(typescriptFullTaskName, spotlessTypescriptApply)
     }
+
+    finalizedBy(spotlessTypescriptApply)
 }
 
-// Generate the data with the same generators and configurations
-// Additionally add dependencies between tasks to automatically run them
-void generateClassesFromOpenApiSpecification(String ymlFileName, String taskName) {
-    String javaFullTaskName = "generateJava${taskName}"
-    String typescriptFullTaskName = "generateTypescript${taskName}"
+task generateJavaSpringCode() {
+    yamlFileToGenerate.each { yaml ->
+        String javaFullTaskName = "generateJavaSpringCode-${yaml.getKey()}"
 
-    tasks.register(javaFullTaskName, GenerateTask) {
-        //Generator information
-        generatorName = "spring"
-        library = "spring-boot"
+        tasks.register(javaFullTaskName, GenerateTask) {
+            //Generator information
+            generatorName = "spring"
+            library = "spring-boot"
 
-        //Spec Information
-        validateSpec = true
-        skipValidateSpec = false
-        inputSpec = "$projectDir/openapi/${ymlFileName}"
-        templateDir = "$projectDir/templates/java"
+            //Spec Information
+            validateSpec = true
+            skipValidateSpec = false
+            inputSpec = "${getLayout().getProjectDirectory()}/openapi/${yaml.getValue()}"
+            templateDir = "${getLayout().getProjectDirectory()}/templates/java"
 
-        //Generation and Output information
-        outputDir = "$buildDir/generated/java"
-        apiPackage = "anime.app.api"
-        invokerPackage = "anime.app.openapi.invoker"
+            //Generation and Output information
+            outputDir = "${getLayout().getBuildDirectory().get()}/generated/java"
+            apiPackage = "anime.app.api"
+            invokerPackage = "anime.app.openapi.invoker"
 
-        // Models must be in one package, because when they aren't cross-referencing them between different files generated many class files
-        modelPackage = "anime.app.dto"
-        configOptions = [
+            // Models must be in one package, because when they aren't cross-referencing them between different files generated many class files
+            modelPackage = "anime.app.dto"
+            configOptions = [
                 'performBeanValidation':'true',
                 'delegatePattern':'false',
                 'dateLibrary': 'java8',
                 'interfaceOnly': 'true',
                 'generateSupportingFiles': 'true'
-        ]
-    }
-    spotlessApply.dependsOn(javaFullTaskName)
-    spotlessCheck.dependsOn(javaFullTaskName)
-    spotlessJava.dependsOn(javaFullTaskName)
-    spotlessJavaCheck.dependsOn(spotlessJavaApply)
-    spotlessTypescript.dependsOn(javaFullTaskName)
+            ]
 
-    tasks.register(typescriptFullTaskName, GenerateTask) {
-        dependsOn(javaFullTaskName)
-        dependsOn(spotlessJava)
+        }
 
-        generatorName = "typescript-fetch"
-
-        validateSpec = true
-        skipValidateSpec = false
-        inputSpec = "$projectDir/openapi/${ymlFileName}"
-        templateDir = "$projectDir/templates/typescript"
-
-        outputDir = "$buildDir/generated/typescript"
-        apiPackage = "anime.app.api"
-        invokerPackage = "anime.app.openapi.invoker"
-        modelPackage = "anime.app.dto"
-        configOptions = [
-            'supportsES6': 'true',
-            'withInterfaces': 'true'
-        ]
+        spotlessJava.dependsOn(javaFullTaskName)
+        spotlessJavaApply.dependsOn(javaFullTaskName)
+        spotlessJavaCheck.dependsOn(javaFullTaskName, spotlessJavaApply)
+        compileJava.dependsOn(javaFullTaskName)
     }
 
-    spotlessApply.dependsOn(typescriptFullTaskName)
-    spotlessCheck.dependsOn(typescriptFullTaskName)
-    spotlessTypescript.dependsOn(typescriptFullTaskName)
-//    project(":Frontend")
-//            .getTasksByName("copyGeneratedFrontendCode", false)
-//            .dependsOn.add(getTasksByName(typescriptFullTaskName))
+    finalizedBy(spotlessJavaApply)
 }
 
 // Automatically add the generated java prettified classes as SourceSet, so gradle recognises them
@@ -141,5 +128,6 @@ void generateClassesFromOpenApiSpecification(String ymlFileName, String taskName
 sourceSets {
     main {
         java.srcDirs += "${buildDir}/generated/java/src/main/java"
+//        java.srcDirs += "${buildDir}/generated/typescript"
     }
 }

@@ -11,15 +11,15 @@
         "format": "prettier --write ./ --ignore-path=.prettierignore",
         "test": "vitest run",
         "@comment": "This is needed as otherwise typescript breaks, check every so often if can be deleted",
-        "postinstall": "npm install @mui/material @emotion/react @emotion/styled --legacy-peer-deps @mui/icons-material"
+        "postinstall": "npm install @mui/material@5.14.18 @emotion/react@11.11.1 @emotion/styled@11.11.0 --legacy-peer-deps @mui/icons-material@5.14.18"
     },
     "dependencies": {
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
         "@fontsource/roboto": "5.0.8",
         "@material-ui/types": "5.1.0",
-        "@mui/icons-material": "^5.14.15",
-        "@mui/material": "^5.14.15",
+        "@mui/icons-material": "^5.14.18",
+        "@mui/material": "^5.14.18",
         "@reduxjs/toolkit": "1.9.7",
         "normalize.css": "^8.0.1",
         "react": "18.2.0",

@@ -5,7 +5,8 @@ plugins {
 version = "0.0.1-SNAPSHOT"
 
 task copyGeneratedFrontendCode(type: Copy) {
-    dependsOn ":API_Generation:compileJava"
+    dependsOn ":API_Generation:generateTypescriptCode"
+    dependsOn ":API_Generation:spotlessTypescript"
 
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
     from "${rootDir}/services/common/API_Generation/build/generated/typescript/models"
@@ -15,14 +16,10 @@ task copyGeneratedFrontendCode(type: Copy) {
 task formatFrontendCode(type: NpxTask) {
     dependsOn npmInstall
     dependsOn copyGeneratedFrontendCode
+    dependsOn spotlessMiscApply
 
     command = 'npm'
     args = ['run', 'format']
-
-    spotlessJava.dependsOn(formatFrontendCode, npmInstall)
-    spotlessSql.dependsOn(formatFrontendCode, npmInstall)
-
-    dependsOn(spotlessMiscApply)
 }
 
 task buildFrontend(type: NpxTask) {
@@ -36,6 +33,9 @@ task buildFrontend(type: NpxTask) {
     inputs.dir('public')
     inputs.dir(fileTree("node_modules").exclude(".cache"))
     outputs.dir('dist')
+
+    build.dependsOn(buildFrontend)
+    spotlessSql.dependsOn(buildFrontend)
 }
 
 task runFrontendTests(type: NpxTask) {

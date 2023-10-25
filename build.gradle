@@ -1,5 +1,7 @@
 plugins {
-    id "com.diffplug.spotless" version "6.22.0"
+    id 'org.springframework.boot' version '3.2.0-M1' apply false
+    id 'io.spring.dependency-management' version '1.1.2' apply false
+    id "com.diffplug.spotless" version "6.22.0" apply false
 }
 
 subprojects { sub ->
@@ -13,17 +15,12 @@ subprojects { sub ->
 
     group = 'anime.app'
 
-    java {
-        sourceCompatibility = '21'
-    }
-
     spotless {
         encoding 'UTF-8'
         enforceCheck true
 
         // Ratchet is disabled as it disallows spotless to target
         // generated files in git ignored files (ex. openapi generated files)
-
         // ratchetFrom 'origin/main'
 
         java {
@@ -40,7 +37,7 @@ subprojects { sub ->
         }
 
         typescript {
-            target "$buildDir/generated/typescript/**/*.ts"
+            target "${getLayout().getBuildDirectory().get()}/generated/typescript/**/*.ts"
             endWithNewline()
 
             toggleOffOn()
@@ -66,6 +63,14 @@ subprojects { sub ->
         }
     }
 
+    // Always check spotless before commit
+    tasks.register('installGitHooks', Copy) {
+        from new File(rootProject.rootDir, 'scripts/hooks')
+        into { new File(rootProject.rootDir, '.git/hooks') }
+    }
+
+    build.dependsOn installGitHooks
+
     // Copy the realm to each service so the integration tests will run
     tasks.register('copyKeycloakRealm', Copy) {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
@@ -78,12 +83,4 @@ subprojects { sub ->
     processTestResources {
         dependsOn copyKeycloakRealm
     }
-
-    // Always check spotless before commit
-    tasks.register('installGitHooks', Copy) {
-        from new File(rootProject.rootDir, 'scripts/hooks')
-        into { new File(rootProject.rootDir, '.git/hooks') }
-    }
-
-    compileJava.dependsOn installGitHooks
 }
