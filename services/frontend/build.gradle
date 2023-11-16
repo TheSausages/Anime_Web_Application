@@ -44,6 +44,7 @@ task runFrontendTests(type: NpxTask) {
     command = 'npm'
     args = ['run', 'test']
 
+    // 'Test' task will fail if this task fails
     test.dependsOn(runFrontendTests)
 }
 

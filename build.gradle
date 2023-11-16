@@ -80,7 +80,9 @@ subprojects { sub ->
         mustRunAfter(spotlessSql, spotlessTypescript, spotlessJava)
     }
 
-    processTestResources {
-        dependsOn copyKeycloakRealm
+    if (sub.archivesBaseName != "Frontend") {
+        processTestResources {
+            dependsOn copyKeycloakRealm
+        }
     }
 }
