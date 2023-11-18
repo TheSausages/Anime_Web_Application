@@ -21,7 +21,7 @@ export const getThemeForLightMode = (mode: LightMode): Theme => {
             return lightTheme;
         case LightMode.COLOR_BLIND:
             // For now light
-            // https://mui.com/material-ui/customization/dark-mode/ <--- how to create custom palette
+            // TODO https://mui.com/material-ui/customization/dark-mode/ <--- how to create custom palette
             return lightTheme;
         default:
             return darkTheme;
